@@ -37,4 +37,11 @@
 
 ## Taks 1: Project Setup
 
-- [ ] Create a new console project 'PokemonConsole', add it to the solution and make sure it is compilable
+Create a new console project 'PokemonConsole', add it to the solution and make sure it is compilable
+
+## Taks 2: Read Json
+
+Print out the list of pokemons in the pokemon.json file
+
+Bonus:
+* check that the file exists
