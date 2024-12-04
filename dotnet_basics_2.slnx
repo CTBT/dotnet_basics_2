@@ -1,1 +1,3 @@
-﻿<Solution />
+﻿<Solution>
+  <Project Path="PokemonConsole\PokemonConsole.csproj" Type="Classic C#" />
+</Solution>
