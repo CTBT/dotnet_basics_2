@@ -55,10 +55,4 @@ The goal ist to query the pokemon api and display the results in the console.
 - Deserialize the response to a list of pokemon
 - Display the results in the console
 
----
 
-## Task 3: Learn how to work with external libraries
-The goal is to use an external nuget package to visualize pokemons.
-
-- Add the nuget package [Spectre.Console](https://www.nuget.org/packages/Spectre.Console) to your console project as a dependency
-- Use the package to display the pokemon names in a selectable list ([help](https://spectreconsole.net/)
