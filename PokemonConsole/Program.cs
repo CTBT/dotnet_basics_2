@@ -15,31 +15,18 @@ var jsonOptions = new JsonSerializerOptions
 };
 
 PokemonList? pokemonList;
+
 try
 {
     pokemonList = JsonSerializer.Deserialize<PokemonList>(response, jsonOptions);
+    ArgumentNullException.ThrowIfNull(pokemonList);
 }
-catch (JsonException e)
+catch (Exception)
 {
     Console.WriteLine($"Pokemon list could not be fetched from the api (Url: {url}");
     throw;
 }
 
 
-
-foreach (var pokemon in pokemonList?.Results)
-{
-    Console.WriteLine(pokemon.Name);
-}
-
-public class PokemonList
-{
-    public required List<Pokemon> Results { get; set; }
-}
-
-public class Pokemon
-{
-    public required string Name { get; set; }
-}
-
-
+// print the list of pokemon names:
+pokemonList.Results.ForEach(pokemon => Console.WriteLine(pokemon.Name));
