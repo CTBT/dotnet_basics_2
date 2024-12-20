@@ -39,9 +39,9 @@
 
 The goal is to setup a new console application that we can use for displaying data.
 
-- Create a new solution 'PokemonSolution'
-- Create a new console project 'PokemonConsole'
-- add the project to the solution
+- Create a new solution 'PokemonSolution' (``dotnet new ...``)
+- Create a new console project 'PokemonConsole' (``dotnet new ...``)
+- add the project to the solution (``dotnet sln``)
 - build
 - run
 
