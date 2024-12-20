@@ -37,11 +37,25 @@
 
 ## Taks 1: Project Setup
 
-Create a new console project 'PokemonConsole', add it to the solution and make sure it is compilable
+The goal is to setup a new console application that we can use for displaying data.
 
-## Taks 2: Read Json
+- Create a new solution 'PokemonSolution'
+- Create a new console project 'PokemonConsole'
+- add the project to the solution
+- build
+- run
 
-Print out the list of pokemons in the pokemon.json file
+## Taks 2:  Make an API Call and display the results
 
-Bonus:
-* check that the file exists
+The goal ist to query the pokemon api and display the results in the console.
+
+- Use the HttpClien class to make a get request to the pokemon api
+- Deserialize the response to a list of pokemon
+- Display the results in the console
+
+### Task 3: Learn how to work with external nuget packages
+The goal is to use the nuget package [Spectre.Console](https://www.nuget.org/packages/Spectre.Console)
+to implement a pokemon manual.
+
+- Add the nuget package to the project as a dependency
+- Use the package to display the pokemon names in a selectable list
