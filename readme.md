@@ -76,6 +76,11 @@ Use the Refit library to make http call to the pokemon api. Refit is a wrapper a
 - Call the api again to request details of a random pokemon (width, height, moves)
 - display those details in the console
 
+```c#
+var pokemonService = RestService.For<IPokemonApi>(host);
+var pokemonList = await pokemonService.GetPokemonListAsync();
+```
+
 Level 3 -  ⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
 
 ---
@@ -86,8 +91,36 @@ Spectre.Console adds vizualizations and interactive componentes to your console.
 
 - Add the [Spectre.Console](https://www.nuget.org/packages/Spectre.Console) console library to the project
 - Use the package to display the pokemon names in a selectable list ([docs](https://spectreconsole.net/))
-- Make another the Display pokemon detail information, for example 'stats'
+- display information about the choosen pokemon
+- navigate the user back to the prompt after showing the pokemon details
+- bonus: styling
 
+``` c#
+AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+            .Title("Choose a pokemon:")
+            .PageSize(10)
+            .MoreChoicesText("[grey](Move up and down to reveal more pokemon)[/]")
+            .AddChoices(pokemonList.Results.Select(i=> i.Name)))
+```
 
 Level 4 - ⭐⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
+
+---
+
+## Task 5: Make your Code reusable
+
+- Add a library project to your solution and move your code there
+- Provide a PokemonService class with public methods
+
+Level 5 - ⭐⭐⭐⭐⭐ Now we know how to structure our code to make it reusable
+
+---
+
+Task 6: Provide your own API
+
+- Add a web api project to your solution and refrence your library
+- Implement endpoints for your public PokemonService methods
+  ! Use the dotnet dependecy injection to resolve the PokemnonService
+
 
