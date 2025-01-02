@@ -4,4 +4,4 @@ GET https://pokeapi.co/api/v2/pokemon?limit=100&offset=0
 ---
 
 ### get pokemon details
-GET https://pokeapi.co/api/v2/pokemon/kingler
+GET https://pokeapi.co/api/v2/pokemon/bulbasaur
