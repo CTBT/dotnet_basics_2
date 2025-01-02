@@ -7,3 +7,7 @@ Accept: application/json
 
 GET {{PokemonWebApi_HostAddress}}/pokemon/bulbasaur
 Accept: application/json
+
+###
+
+GET {{PokemonWebApi_HostAddress}}/openapi/v1.json
