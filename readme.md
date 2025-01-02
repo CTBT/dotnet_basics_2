@@ -27,9 +27,6 @@
   - Blazor
   - MAUI (Xamarin)
 
-
-⭐ Now we know what dotnet is and for what it is used
-
 --- 
 
 ## Working with the CLI
@@ -53,7 +50,7 @@ The goal is to setup a new console application that we can use for displaying da
 - build
 - run
 
-Level 1: ⭐⭐ Now we know how to setup a new dotnet project
+Level 1 - ⭐⭐ Now we know how to setup a new dotnet project
 --- 
 
 ## Task 2:  Make an API Call and display the results
@@ -65,7 +62,7 @@ The goal ist to query the pokemon api and display the results in the console.
 - Display the results in the console
 
 
-Level 2: ⭐⭐ Now we know how to query apis an work with data types
+Level 2 - ⭐⭐ Now we know how to query apis an work with data types
 ---
 
 ## Task 3: Learn how to work with external libraries
@@ -77,7 +74,7 @@ Use the Refit library to make http call to the pokemon api. Refit is a wrapper a
 - Call the api again to request details of a random pokemon (width, height, moves)
 - display those details in the console
 
-Level 3: ⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
+Level 3 -  ⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
 
 ---
 
@@ -90,5 +87,5 @@ Spectre.Console adds vizualizations and interactive componentes to your console.
 - Make another the Display pokemon detail information, for example 'stats'
 
 
-Level 4: ⭐⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
+Level 4 - ⭐⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
 
