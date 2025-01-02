@@ -1,4 +1,4 @@
-namespace PokemonConsole.Models;
+namespace PokemonLib.Models;
 
 public class PokemonListItem
 {

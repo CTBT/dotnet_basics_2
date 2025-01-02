@@ -1,6 +1,4 @@
-using System.Runtime.CompilerServices;
-
-namespace PokemonConsole.Models;
+namespace PokemonLib.Models;
 
 public class Pokemon
 {
@@ -8,5 +6,5 @@ public class Pokemon
     public int Id { get; set; }
     public int Height { get; set; }
     public int Weight { get; set; }
-    public IEnumerable<MoveListItem> Moves { get; set; }
+    public required IEnumerable<MoveListItem> Moves { get; set; }
 }

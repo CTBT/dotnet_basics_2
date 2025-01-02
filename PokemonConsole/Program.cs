@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using PokemonConsole.Services;
+using PokemonLib.Services;
 using Refit;
 using Spectre.Console;
 
@@ -7,8 +7,7 @@ AnsiConsole.MarkupLine("[underline green]Hello, this is your pokedex. Have fun![
 
 // http call to get a list of pokemon from the pokemon api:
 
-var host = "https://pokeapi.co";
-var pokemonService = RestService.For<IPokemonApi>(host);
+var pokemonService = new PokemonService();
 try
 {
     var pokemonList = await pokemonService.GetPokemonListAsync();
@@ -31,8 +30,8 @@ try
         var rows = new List<Text> {
             new($"Height: {details.Height}", style),
             new($"Weight: {details.Weight}", style),
-            new($"Number of Moves: {details.Moves.Count()}", style),
-            new ($"Some Moves: {string.Join(",",details.Moves.Take(3).Select(i => i.Move.Name))}", style)
+            new($"Number of Moves: {details.Moves?.Count()}", style),
+            new ($"Some Moves: {string.Join(",",details.Moves!.Take(3).Select(i => i.Move.Name))}", style)
         };
         
         var detailsPanel = new Panel(new Rows(rows));
