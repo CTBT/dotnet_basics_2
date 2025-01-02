@@ -1,0 +1,9 @@
+@PokemonWebApi_HostAddress = http://localhost:5063
+
+GET {{PokemonWebApi_HostAddress}}/pokemon/
+Accept: application/json
+
+###
+
+GET {{PokemonWebApi_HostAddress}}/pokemon/bulbasaur
+Accept: application/json
