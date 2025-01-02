@@ -1,15 +1,15 @@
 ---
 
-# .NET + C# Workshop
+# dotnet + c# Workshop
 ---
 **Table of content:**
 
 - [Basics](#item-1)
 - [Working with the CLI](#item-2)
-- [Dojo - Querying data (LINQ)](#item-3)
-- [Testing (xunit)](#item-4)
-- [Dojo - Writing test assertions](#item-5)
-- [Implementing APIs](#item-6)
+- [Task 1: Project Setup](#item-3)
+- [Task 2:  Make an API Call and display the results](#item-4)
+- [Task 3: Learn how to work with external libraries](#item-5)
+- [Task 4: Implement the pokedex](#item-6)
 
 ---
 ## Basics
@@ -21,6 +21,14 @@
 - recommended IDEs
     - Jetbrains Rider
     - VS Code + C# Dev Kit
+- dotnet:
+  - Languages: VB.net,C#,F#
+  - Project Types: Libraries, Console Application, Web Application
+  - Blazor
+  - MAUI (Xamarin)
+
+
+⭐ Now we know what dotnet is and for what it is used
 
 --- 
 
@@ -35,7 +43,7 @@
 
 --- 
 
-## Taks 1: Project Setup
+## Task 1: Project Setup
 
 The goal is to setup a new console application that we can use for displaying data.
 
@@ -45,20 +53,42 @@ The goal is to setup a new console application that we can use for displaying da
 - build
 - run
 
+Level 1: ⭐⭐ Now we know how to setup a new dotnet project
 --- 
 
-## Taks 2:  Make an API Call and display the results
+## Task 2:  Make an API Call and display the results
 
 The goal ist to query the pokemon api and display the results in the console.
 
-- Use the HttpClien class to make a get request to the pokemon api
-- Deserialize the response to a list of pokemon
+- Use the HttpClient class to make a get request to the pokemon api
+- Deserialize the response to a list of pokemon (use typed models)
 - Display the results in the console
 
+
+Level 2: ⭐⭐ Now we know how to query apis an work with data types
 ---
 
 ## Task 3: Learn how to work with external libraries
-The goal is to use an external nuget package to visualize pokemons.
+The goal ist to use external nuget packages to add functionallity to your project that is not included in the .net sdk
+Use the Refit library to make http call to the pokemon api. Refit is a wrapper around the HttpClient class that ueses annotations to define external endpoints.
 
-- Add the nuget package [Spectre.Console](https://www.nuget.org/packages/Spectre.Console) to your console project as a dependency
-- Use the package to display the pokemon names in a selectable list ([help](https://spectreconsole.net/)
+- Add the [Refit](https://www.nuget.org/packages/refit/) http client library to the project
+- Use the package to replace the HttClient call in your code
+- Call the api again to request details of a random pokemon (width, height, moves)
+- display those details in the console
+
+Level 3: ⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
+
+---
+
+## Task 4: Implement the pokedex
+Use the Spectre.Console nuget package to implement a pokedex in your console. 
+Spectre.Console adds vizualizations and interactive componentes to your console.
+
+- Add the [Spectre.Console](https://www.nuget.org/packages/Spectre.Console) console library to the project
+- Use the package to display the pokemon names in a selectable list ([docs](https://spectreconsole.net/))
+- Make another the Display pokemon detail information, for example 'stats'
+
+
+Level 4: ⭐⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
+
