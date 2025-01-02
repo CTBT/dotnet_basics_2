@@ -1,8 +1,9 @@
 ﻿using System.Net;
 using PokemonConsole.Services;
 using Refit;
+using Spectre.Console;
 
-Console.WriteLine(" ----- Hello, this is the pokemon manual -----");
+AnsiConsole.MarkupLine("[underline green]Hello, this is your pokedex. Have fun![/]");
 
 // http call to get a list of pokemon from the pokemon api:
 
@@ -11,25 +12,40 @@ var pokemonService = RestService.For<IPokemonApi>(host);
 try
 {
     var pokemonList = await pokemonService.GetPokemonListAsync();
+    while (true)
+    {
+        // print the list of pokemon names:
+        AnsiConsole.Write(new Rule("[blue]Pokemon Index[/]"));
+        var pokemonName = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Choose a pokemon:")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Move up and down to reveal more pokemon)[/]")
+                .AddChoices(pokemonList.Results.Select(i=> i.Name)));
     
-    // print the list of pokemon names:
-    pokemonList.Results.ForEach(pokemon => Console.WriteLine(pokemon.Name));
-    
-    Console.WriteLine("------");
-    
-    // get details of a random pokemon from the list:
-    var randomId = new Random().Next(0, pokemonList.Results.Count - 1);
-    var details = await pokemonService.GetPokemonDetails(pokemonList.Results[randomId].Name);
-    Console.WriteLine($"Height of {details.Name}: {details.Height}");
-    Console.WriteLine($"Weight of {details.Name}: {details.Weight}");
-    Console.WriteLine($"Number of Moves of {details.Name}: {details.Moves.Count()}");
-    Console.WriteLine($"Number of Moves of {details.Name}: {string.Join(",",details.Moves.Select(i => i.Move.Name))}");
+        // get details of a random pokemon from the list:
+        var details = await pokemonService.GetPokemonDetails(pokemonName);
+        // Create a list of Items
+
+        var style = new Style(Color.Yellow, Color.Black);
+        var rows = new List<Text> {
+            new($"Height: {details.Height}", style),
+            new($"Weight: {details.Weight}", style),
+            new($"Number of Moves: {details.Moves.Count()}", style),
+            new ($"Some Moves: {string.Join(",",details.Moves.Take(3).Select(i => i.Move.Name))}", style)
+        };
+        
+        var detailsPanel = new Panel(new Rows(rows));
+        detailsPanel.Header = new PanelHeader($"[bold yellow]{pokemonName}[/]", Justify.Center);
+        detailsPanel.Border = BoxBorder.Rounded;
+        AnsiConsole.Write(detailsPanel);
+    }
 }
 catch (ApiException e)
 {
-    Console.WriteLine(e.StatusCode == HttpStatusCode.NotFound
-        ? $"The requested resource could not be found: {e.Uri} "
-        : $"Pokemon api call to {e.Uri} failed");
+    AnsiConsole.MarkupLine(e.StatusCode == HttpStatusCode.NotFound
+        ? $"[red]The requested resource could not be found: {e.Uri}[/]"
+        : $"[red]Pokemon api call to {e.Uri} failed[/]");
     throw;
 }
 
