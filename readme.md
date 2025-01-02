@@ -50,7 +50,8 @@ The goal is to setup a new console application that we can use for displaying da
 - build
 - run
 
-Level 1 - ⭐⭐ Now we know how to setup a new dotnet project
+Level 1 - ⭐ Now we know how to setup a new dotnet project
+
 --- 
 
 ## Task 2:  Make an API Call and display the results
@@ -63,6 +64,7 @@ The goal ist to query the pokemon api and display the results in the console.
 
 
 Level 2 - ⭐⭐ Now we know how to query apis an work with data types
+
 ---
 
 ## Task 3: Learn how to work with external libraries
