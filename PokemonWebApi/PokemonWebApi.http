@@ -5,7 +5,7 @@ Accept: application/json
 
 ###
 
-GET {{PokemonWebApi_HostAddress}}/pokemon/bulbasaur
+GET {{PokemonWebApi_HostAddress}}/pokemon/bulbasar
 Accept: application/json
 
 ###

@@ -7,14 +7,17 @@ using Refit;
 
 namespace PokemonWebApi.Endpoints;
 
-public static class PokemonDataEndpoints
+public class PokemonDataEndpoints
 {
     public static async Task<PokemonList> GetPokemonList([FromServices] PokemonService service)
     {
         return await service.GetPokemonListAsync();
     }
     
-    public static async Task<Results<NotFound, Ok<Pokemon>>> GetPokemon([FromServices] PokemonService service, [FromRoute] string name)
+    public static async Task<Results<NotFound, Ok<Pokemon>>> GetPokemon(
+        [FromServices] PokemonService service, 
+        [FromServices] ILogger<PokemonDataEndpoints> logger,
+        [FromRoute] string name)
     {
         Pokemon? pokemon = null;
         try
@@ -25,6 +28,7 @@ public static class PokemonDataEndpoints
         {
             if (e.StatusCode == HttpStatusCode.NotFound)
             {
+                logger.LogWarning("Pokemon {Name} was not found in the external api", name);
                 return TypedResults.NotFound();
             }
         }
