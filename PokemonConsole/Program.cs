@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using PokemonConsole.Models;
+﻿using System.Net;
 using PokemonConsole.Services;
 using Refit;
 
@@ -9,16 +8,28 @@ Console.WriteLine(" ----- Hello, this is the pokemon manual -----");
 
 var host = "https://pokeapi.co";
 var pokemonService = RestService.For<IPokemonApi>(host);
-PokemonList? pokemonList;
 try
 {
-    pokemonList = await pokemonService.GetPokemonListAsync();
+    var pokemonList = await pokemonService.GetPokemonListAsync();
+    
+    // print the list of pokemon names:
+    pokemonList.Results.ForEach(pokemon => Console.WriteLine(pokemon.Name));
+    
+    Console.WriteLine("------");
+    
+    // get details of a random pokemon from the list:
+    var randomId = new Random().Next(0, pokemonList.Results.Count - 1);
+    var details = await pokemonService.GetPokemonDetails(pokemonList.Results[randomId].Name);
+    Console.WriteLine($"Height of {details.Name}: {details.Height}");
+    Console.WriteLine($"Weight of {details.Name}: {details.Weight}");
+    Console.WriteLine($"Number of Moves of {details.Name}: {details.Moves.Count()}");
+    Console.WriteLine($"Number of Moves of {details.Name}: {string.Join(",",details.Moves.Select(i => i.Move.Name))}");
 }
 catch (ApiException e)
 {
-    Console.WriteLine($"Pokemon list could not be fetched from {e.Uri}");
+    Console.WriteLine(e.StatusCode == HttpStatusCode.NotFound
+        ? $"The requested resource could not be found: {e.Uri} "
+        : $"Pokemon api call to {e.Uri} failed");
     throw;
 }
 
-// print the list of pokemon names:
-pokemonList.Results.ForEach(pokemon => Console.WriteLine(pokemon.Name));
