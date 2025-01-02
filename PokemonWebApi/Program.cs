@@ -1,5 +1,4 @@
 using PokemonLib.Services;
-using PokemonWebApi;
 using PokemonWebApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
