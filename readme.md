@@ -117,10 +117,78 @@ Level 5 - ⭐⭐⭐⭐⭐ Now we know how to structure our code to make it reusa
 
 ---
 
-Task 6: Provide your own API
+## Task 6: Provide your own API
 
 - Add a web api project to your solution and refrence your library
 - Implement endpoints for your public PokemonService methods
-  ! Use the dotnet dependecy injection to resolve the PokemnonService
+  ! Use the dotnet dependency injection to provide a PokemonService instance
 
+## Task 7: Deliver Quality
 
+#### Make your api scalable with [Output Caching](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output?view=aspnetcore-9.0) 
+- Add Caching middleware
+  ```c#
+  app.UseOutputCache();
+  ```
+- Activate caching for your endpoints
+  ```c#
+  .CacheOutput();
+  ```
+
+#### Refine your data types
+- Define result types:
+```c#
+Task<Results<NotFound, Ok<Pokemon>>>
+```
+
+```c#
+return TypedResults.Ok(pokemon);
+```
+
+ #### Provide an openapi UI for your team 
+ - Reference the [Scalar](https://www.nuget.org/packages/Scalar.AspNetCore) package
+ - Map the UI:
+   
+```c#
+app.MapScalarApiReference();
+```
+ - add it to your launchsettings:
+```
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5063/scalar/v1",
+```
+
+#### Configure Logging
+- Use an instance of ILogger to write log messages
+```c#
+ILogger<PokemonService>
+```
+
+- Configure your log levels:
+```c#
+  {
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "PokemonWebApi": "Warning"
+    }
+  }
+}
+```
+
+#### Make it testable
+- Create an Interface IPokemonService and use it in the PokemonService
+```c#
+public class PokemonService : IPokemonService
+```
+- Create PokemonTestService that creates fake data
+```c#
+Enumerable.Range(1, 2000)
+```
+- Use the IPokemonTestService interface in your endpoints
+- Add a configuration value that makes you choose the  type you want to use
+```c#
+var useTestData = builder.Configuration.GetValue<bool>("ServiceOptions:UseTestData");
+builder.Services.AddScoped<IPokemonService, ...
+```
