@@ -123,7 +123,7 @@ Level 5 - ⭐⭐⭐⭐⭐ Now we know how to structure our code to make it reusa
 - Implement endpoints for your public PokemonService methods
   ! Use the dotnet dependency injection to provide a PokemonService instance
 
-## Task 7: Deliver Quality
+## Task 7: Focus on quality
 
 #### Make your api scalable with [Output Caching](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output?view=aspnetcore-9.0) 
 - Add Caching middleware
@@ -177,7 +177,9 @@ ILogger<PokemonService>
 }
 ```
 
-#### Make it testable
+Level 6 - ⭐⭐⭐⭐⭐⭐ We learned how to make our application more robust, scalabale and with well defined endpoints.
+
+## Task 7: Make it testable
 - Create an Interface IPokemonService and use it in the PokemonService
 ```c#
 public class PokemonService : IPokemonService
@@ -192,3 +194,11 @@ Enumerable.Range(1, 2000)
 var useTestData = builder.Configuration.GetValue<bool>("ServiceOptions:UseTestData");
 builder.Services.AddScoped<IPokemonService, ...
 ```
+
+Level 7 - ⭐⭐⭐⭐⭐⭐ Our application can now be tested without production data and has testable code.
+
+Further things to know (to be continued)
+- How to write unit and integration tests
+- How to export metrics, structured logs to external systems an how to work with them
+- How to persist external data in your system
+
