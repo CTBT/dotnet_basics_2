@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Microsoft.Extensions.Logging.Abstractions;
 using PokemonLib.Services;
 using Refit;
 using Spectre.Console;
@@ -7,7 +8,7 @@ AnsiConsole.MarkupLine("[underline green]Hello, this is your pokedex. Have fun![
 
 // http call to get a list of pokemon from the pokemon api:
 
-var pokemonService = new PokemonService();
+var pokemonService = new PokemonService(NullLogger<PokemonService>.Instance);
 try
 {
     var pokemonList = await pokemonService.GetPokemonListAsync();
