@@ -7,13 +7,13 @@ namespace PokemonWebApi.Endpoints;
 
 public static class PokemonDataEndpoints
 {
-    public static async Task<PokemonList> GetPokemonList([FromServices] PokemonService service)
+    public static async Task<PokemonList> GetPokemonList([FromServices] IPokemonService service)
     {
         return await service.GetPokemonListAsync();
     }
     
     public static async Task<Results<NotFound, Ok<Pokemon>>> GetPokemon(
-        [FromServices] PokemonService service, 
+        [FromServices] IPokemonService service, 
         [FromRoute] string name)
     {
         var pokemon = await service.GetPokemonDetails(name);

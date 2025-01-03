@@ -5,13 +5,14 @@ using Refit;
 
 namespace PokemonLib.Services;
 
-public class PokemonService
+public class PokemonService : IPokemonService
 {
     private readonly ILogger<PokemonService> _logger;
     private readonly IPokemonApi _pokemonApi;
     public PokemonService(ILogger<PokemonService> logger)
     {
         _logger = logger;
+        _logger.LogInformation("Using the real PokemonService");
         var host = "https://pokeapi.co";
         _pokemonApi = RestService.For<IPokemonApi>(host);
     }
