@@ -2,17 +2,11 @@
 
 # dotnet + c# Workshop
 ---
-**Table of content:**
 
-- [Basics](#item-1)
-- [Working with the CLI](#item-2)
-- [Task 1: Project Setup](#item-3)
-- [Task 2:  Make an API Call and display the results](#item-4)
-- [Task 3: Learn how to work with external libraries](#item-5)
-- [Task 4: Implement the pokedex](#item-6)
+[TOC]
 
 ---
-## Basics
+## Basics {#Basics}
 
 - .net and c# versioning and releases
     - https://versionsof.net/
