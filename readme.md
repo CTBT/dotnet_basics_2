@@ -3,10 +3,23 @@
 # dotnet + c# Workshop
 ---
 
-[TOC]
+- Basic Knowledge
+
+- Working with the CLI
+
+Coding:
+- Create your first application
+- Calling to an external API
+- Learn how to work with external packages
+- Implement a UI
+- Make your Code reusable
+- Provide your own API
+- Add some features
+- Make your app configurable for different environments
+- Write a first test
 
 ---
-## Basics {#Basics}
+## Basic Knowledge
 
 - .net and c# versioning and releases
     - https://versionsof.net/
@@ -34,7 +47,7 @@
 
 --- 
 
-## Task 1: Project Setup
+## Task 1: Create your first application
 
 The goal is to setup a new console application that we can use for displaying data.
 
@@ -48,7 +61,7 @@ Level 1 - ⭐ Now we know how to setup a new dotnet project
 
 --- 
 
-## Task 2:  Make an API Call and display the results
+## Task 2: Calling to an external API
 
 The goal ist to query the pokemon api and display the results in the console.
 
@@ -61,7 +74,7 @@ Level 2 - ⭐⭐ Now we know how to query apis an work with data types
 
 ---
 
-## Task 3: Learn how to work with external libraries
+## Task 3: Learn how to work with external packages
 The goal ist to use external nuget packages to add functionallity to your project that is not included in the .net sdk
 Use the Refit library to make http call to the pokemon api. Refit is a wrapper around the HttpClient class that ueses annotations to define external endpoints.
 
@@ -79,7 +92,7 @@ Level 3 -  ⭐⭐⭐ Now we know how to be even more productive with dotnet by u
 
 ---
 
-## Task 4: Implement the pokedex
+## Task 4: Implement a UI
 Use the Spectre.Console nuget package to implement a pokedex in your console. 
 Spectre.Console adds vizualizations and interactive componentes to your console.
 
@@ -117,7 +130,9 @@ Level 5 - ⭐⭐⭐⭐⭐ Now we know how to structure our code to make it reusa
 - Implement endpoints for your public PokemonService methods
   ! Use the dotnet dependency injection to provide a PokemonService instance
 
-## Task 7: Focus on quality
+Level 6 - ⭐⭐⭐⭐⭐⭐ We learned how to create an API project, define endpoints and use dependency injection
+
+## Task 7: Add some features
 
 #### Make your api scalable with [Output Caching](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output?view=aspnetcore-9.0) 
 - Add Caching middleware
@@ -171,9 +186,9 @@ ILogger<PokemonService>
 }
 ```
 
-Level 6 - ⭐⭐⭐⭐⭐⭐ We learned how to make our application more robust, scalabale and with well defined endpoints.
+Level 7 - ⭐⭐⭐⭐⭐⭐⭐ We learned how to make our application more robust, scalabale and with well defined endpoints.
 
-## Task 7: Make it testable
+## Task 8: Make your app configurable for different environments
 - Create an Interface IPokemonService and use it in the PokemonService
 ```c#
 public class PokemonService : IPokemonService
@@ -189,10 +204,15 @@ var useTestData = builder.Configuration.GetValue<bool>("ServiceOptions:UseTestDa
 builder.Services.AddScoped<IPokemonService, ...
 ```
 
-Level 7 - ⭐⭐⭐⭐⭐⭐ Our application can now be tested without production data and has testable code.
+Level 8 - ⭐⭐⭐⭐⭐⭐⭐⭐ We learned how to use app configuration to configure our app for deployment environments
 
-Further things to know (to be continued)
-- How to write unit and integration tests
-- How to export metrics, structured logs to external systems an how to work with them
+## Task 9 Write a first test
+- Add a xunit test project for the PokemonLib and create a refrence to it
+- Add a first test
+
+Level 9 - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ We learned how write and run tests for our code
+
+# Further things to know (to be continued)
+- How to use different testing strategies
+- How to observe our app with metrics and structured logs
 - How to persist external data in your system
-
