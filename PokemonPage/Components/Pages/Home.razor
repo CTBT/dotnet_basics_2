@@ -1,0 +1,63 @@
+﻿@page "/"
+@using PokemonLib.Models
+@inject IPokemonService PokemonService
+@attribute [StreamRendering]
+<PageTitle>Pokedex</PageTitle>
+
+<h1>Pokedex</h1>
+
+<p>This is the pokedex main page.</p>
+
+@if (_pokemons == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <p>
+        <label>
+            Search for a pokemon:
+            <input @oninput="SetFilter" />
+        </label>
+    </p>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Pokemon</th>
+            <th>External pokeapi Url</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (_filteredPokemons != null)
+        {
+            foreach (var pokemon in _filteredPokemons)
+            {
+                <tr>
+                    <td><a href="/pokemon/@pokemon.Name">@pokemon.Name</a></td>
+                    <td><a href="@pokemon.Url" target="_blank">@pokemon.Url</a></td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private void SetFilter(ChangeEventArgs e)
+    {
+        var filter = (string)(e.Value ?? string.Empty);
+        _filteredPokemons = _pokemons?.Where(i => i.Name.Contains(filter));
+    }
+    
+    private List<PokemonListItem>? _pokemons;
+    private IEnumerable<PokemonListItem>? _filteredPokemons;
+    protected override async Task OnInitializedAsync()
+    {
+        _pokemons = (await PokemonService.GetPokemonListAsync()).Results;
+        _filteredPokemons = _pokemons;
+    }
+
+}

@@ -1,0 +1,64 @@
+@page "/pokemon/{name}"
+@using PokemonLib.Models
+@attribute [StreamRendering]
+@inject IPokemonService PokemonService
+
+<PageTitle>Pokemon Details</PageTitle>
+
+@if (_pokemon == null || _pokemons == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <select @onchange="NavigateToPokemon" >
+        <option value="">All</option>
+        @foreach (var pokemon in _pokemons)
+        {
+            <option value="@pokemon.Name">@pokemon.Name</option>
+        }
+    </select>
+    
+    <div>
+        <h1>@_pokemon.Name</h1>
+        <img src="@Url" alt="@_pokemon.Name" style="float: right;"/>
+        <p><strong>Height:</strong> @_pokemon.Height</p>
+        <p><strong>Weight:</strong> @_pokemon.Weight</p>
+        <p><strong>Moves:</strong></p>
+        <ul>
+            @foreach (var move in _pokemon.Moves)
+            {
+                <li>@move.Move.Name</li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public required string Name { get; set; }
+
+    private string Url => $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/{_pokemon.Id}.png";
+    private PokemonLib.Models.Pokemon _pokemon;
+    private List<PokemonListItem>? _pokemons;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pokemon = (await PokemonService.GetPokemonDetails(Name))!;
+        _pokemons = (await PokemonService.GetPokemonListAsync()).Results;
+    }
+    
+    private async Task NavigateToPokemon(ChangeEventArgs e)
+    {
+        var selectedPokemon = (string)(e.Value ?? string.Empty);
+        if (!string.IsNullOrEmpty(selectedPokemon))
+        {
+            Name = selectedPokemon;
+            _pokemon = await PokemonService.GetPokemonDetails(Name);
+            // Refresh
+            StateHasChanged();
+        }
+    }
+}
