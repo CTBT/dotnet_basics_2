@@ -13,10 +13,15 @@ public class PokemonServiceTests
     }
 
     [Fact]
-    public async Task GetPokemonListAsync_ReturnsPokemonList()
+    public async Task GetPokemonDetails_ReturnsExpectedPokemon()
     {
-        var result = await _pokemonService.GetPokemonListAsync();
+        // arrange
+        var pokemons = (await _pokemonService.GetPokemonListAsync()).Results;
+        var expectedName = pokemons.First().Name;
+        // act
+        var result = await _pokemonService.GetPokemonDetails(expectedName);
 
-        Assert.True(result.Results.Count > 0);
+        // assert
+        Assert.True(result.Name == expectedName);
     }
 }
