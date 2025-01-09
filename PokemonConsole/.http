@@ -1,7 +1,11 @@
 ### get a list of pokemons
 GET https://pokeapi.co/api/v2/pokemon?limit=100&offset=0
 
----
+### get pokemon list from local api
+GET http://localhost:5063/pokemon
 
-### get pokemon details
-GET https://pokeapi.co/api/v2/pokemon/bulbasaur
+### get pokemon details from pokeapi
+GET https://pokeapi.co/api/v2/pokemon/bulbasaurd
+
+### get pokemon details from local api
+GET http://localhost:5063/pokemon/bulbasaur
