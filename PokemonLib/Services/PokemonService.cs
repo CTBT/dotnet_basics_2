@@ -25,6 +25,7 @@ public class PokemonService
     {
         try
         {
+            _logger.LogInformation("Requesting details for pokemon {Name} from the pokeapi", name);
             return await _pokemonApi.GetPokemonDetails(name);
         }
         catch (ApiException e)
