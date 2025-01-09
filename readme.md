@@ -1,18 +1,25 @@
 ---
 
-# .NET + C# Workshop
+# dotnet + c# Workshop
 ---
-**Table of content:**
 
-- [Basics](#item-1)
-- [Working with the CLI](#item-2)
-- [Dojo - Querying data (LINQ)](#item-3)
-- [Testing (xunit)](#item-4)
-- [Dojo - Writing test assertions](#item-5)
-- [Implementing APIs](#item-6)
+- Basic Knowledge
+
+- Working with the CLI
+
+Coding:
+- Create your first application
+- Calling to an external API
+- Learn how to work with external packages
+- Implement a UI
+- Make your Code reusable
+- Provide your own API
+- Add some features
+- Make your app configurable for different environments
+- Write a first test
 
 ---
-## Basics
+## Basic Knowledge
 
 - .net and c# versioning and releases
     - https://versionsof.net/
@@ -21,6 +28,11 @@
 - recommended IDEs
     - Jetbrains Rider
     - VS Code + C# Dev Kit
+- dotnet:
+  - Languages: VB.net,C#,F#
+  - Project Types: Libraries, Console Application, Web Application
+  - Blazor
+  - MAUI (Xamarin)
 
 --- 
 
@@ -35,7 +47,7 @@
 
 --- 
 
-## Taks 1: Project Setup
+## Task 1: Create your first application
 
 The goal is to setup a new console application that we can use for displaying data.
 
@@ -45,19 +57,162 @@ The goal is to setup a new console application that we can use for displaying da
 - build
 - run
 
+Level 1 - ⭐ Now we know how to setup a new dotnet project
+
 --- 
 
-## Taks 2:  Make an API Call and display the results
+## Task 2: Calling to an external API
 
 The goal ist to query the pokemon api and display the results in the console.
 
-- Use the HttpClien class to make a get request to the pokemon api
-- Deserialize the response to a list of pokemon
+- Use the HttpClient class to make a get request to the pokemon api
+- Deserialize the response to a list of pokemon (use typed models)
 - Display the results in the console
 
-### Task 3: Learn how to work with external nuget packages
-The goal is to use the nuget package [Spectre.Console](https://www.nuget.org/packages/Spectre.Console)
-to implement a pokemon manual.
 
-- Add the nuget package to the project as a dependency
-- Use the package to display the pokemon names in a selectable list
+Level 2 - ⭐⭐ Now we know how to query apis an work with data types
+
+---
+
+## Task 3: Learn how to work with external packages
+The goal ist to use external nuget packages to add functionallity to your project that is not included in the .net sdk
+Use the Refit library to make http call to the pokemon api. Refit is a wrapper around the HttpClient class that ueses annotations to define external endpoints.
+
+- Add the [Refit](https://www.nuget.org/packages/refit/) http client library to the project
+- Use the package to replace the HttClient call in your code
+- Call the api again to request details of a random pokemon (width, height, moves)
+- display those details in the console
+
+```c#
+var pokemonService = RestService.For<IPokemonApi>(host);
+var pokemonList = await pokemonService.GetPokemonListAsync();
+```
+
+Level 3 -  ⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
+
+---
+
+## Task 4: Implement a UI
+Use the Spectre.Console nuget package to implement a pokedex in your console. 
+Spectre.Console adds vizualizations and interactive componentes to your console.
+
+- Add the [Spectre.Console](https://www.nuget.org/packages/Spectre.Console) console library to the project
+- Use the package to display the pokemon names in a selectable list ([docs](https://spectreconsole.net/))
+- display information about the choosen pokemon
+- navigate the user back to the prompt after showing the pokemon details
+- bonus: styling
+
+``` c#
+AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+            .Title("Choose a pokemon:")
+            .PageSize(10)
+            .MoreChoicesText("[grey](Move up and down to reveal more pokemon)[/]")
+            .AddChoices(pokemonList.Results.Select(i=> i.Name)))
+```
+
+Level 4 - ⭐⭐⭐⭐ Now we know how to be even more productive with dotnet by using external libraries
+
+---
+
+## Task 5: Make your Code reusable
+
+- Add a library project to your solution and move your code there
+- Provide a PokemonService class with public methods
+
+Level 5 - ⭐⭐⭐⭐⭐ Now we know how to structure our code to make it reusable
+
+---
+
+## Task 6: Provide your own API
+
+- Add a web api project to your solution and refrence your library
+- Implement endpoints for your public PokemonService methods
+  ! Use the dotnet dependency injection to provide a PokemonService instance
+
+Level 6 - ⭐⭐⭐⭐⭐⭐ We learned how to create an API project, define endpoints and use dependency injection
+
+## Task 7: Add some features
+
+#### Make your api scalable with [Output Caching](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output?view=aspnetcore-9.0) 
+- Add Caching middleware
+  ```c#
+  app.UseOutputCache();
+  ```
+- Activate caching for your endpoints
+  ```c#
+  .CacheOutput();
+  ```
+
+#### Refine your data types
+- Define result types:
+```c#
+Task<Results<NotFound, Ok<Pokemon>>>
+```
+
+```c#
+return TypedResults.Ok(pokemon);
+```
+
+ #### Provide an openapi UI for your team 
+ - Reference the [Scalar](https://www.nuget.org/packages/Scalar.AspNetCore) package
+ - Map the UI:
+   
+```c#
+app.MapScalarApiReference();
+```
+ - add it to your launchsettings:
+```
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5063/scalar/v1",
+```
+
+#### Configure Logging
+- Use an instance of ILogger to write log messages
+```c#
+ILogger<PokemonService>
+```
+
+- Configure your log levels:
+```c#
+  {
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "PokemonWebApi": "Warning"
+    }
+  }
+}
+```
+
+Level 7 - ⭐⭐⭐⭐⭐⭐⭐ We learned how to make our application more robust, scalabale and with well defined endpoints.
+
+## Task 8: Make your app configurable for different environments
+- Create an Interface IPokemonService and use it in the PokemonService
+```c#
+public class PokemonService : IPokemonService
+```
+- Create PokemonTestService that creates fake data
+```c#
+Enumerable.Range(1, 2000)
+```
+- Use the IPokemonTestService interface in your endpoints
+- Add a configuration value that makes you choose the  type you want to use
+```c#
+var useTestData = builder.Configuration.GetValue<bool>("ServiceOptions:UseTestData");
+builder.Services.AddScoped<IPokemonService, ...
+```
+
+Level 8 - ⭐⭐⭐⭐⭐⭐⭐⭐ We learned how to use app configuration to configure our app for deployment environments
+
+## Task 9 Write a first test
+- Add a xunit test project for the PokemonLib and create a refrence to it
+- Add a first test
+
+Level 9 - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ We learned how write and run tests for our code
+
+# Further things to know (to be continued)
+- How to use different testing strategies
+- How to observe our app with metrics and structured logs
+- How to persist external data in your system
