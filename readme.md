@@ -235,30 +235,55 @@ We learned how to make our application more robust, scalabale and with well defi
 ---
 
 ## Level 8: Make your app configurable for different environments
-- Create an Interface IPokemonService and use it in the PokemonService
+- Create an Interface IPokemonService and implement it in the PokemonService
 ```c#
 public class PokemonService : IPokemonService
 ```
-- Create PokemonTestService that creates fake data
+- Use the ``IPokemonService`` interface in your endpoints instead of the concrete type to make them more flexible
 ```c#
-Enumerable.Range(1, 2000)
+builder.Services.AddScoped<IPokemonService, PokemonService>();
 ```
-- Use the IPokemonTestService interface in your endpoints
-- Add a configuration value that makes you choose the  type you want to use
+- Create another ``IPokemonService`` implementation called ``PokemonTestService``
+- GetPokemonList: generate a fake pokemonlist by using the Range function
+```c#
+Results = Enumerable.Range(1, 2000).Select(i => new PokemonListItem ...
+```
+- GetPokemonDetails: return a new pokemon instance with test values and the name given name
+
+- Add a configuration value to your appsettings that makes you choose the  type you want to use:
+```c#
+  "ServiceOptions": {
+    "UseTestData": false
+  }
+```
+
+- inject the IPokemonService implementation depending on the configuration value
 ```c#
 var useTestData = builder.Configuration.GetValue<bool>("ServiceOptions:UseTestData");
-builder.Services.AddScoped<IPokemonService, ...
+if (useTestData)
+{
+    ...
+}
+else
+{
+    ...
+}
 ```
 
 ---
 
-### Level 8 completed - ⭐⭐⭐⭐⭐⭐⭐⭐ We learned how to use app configuration to configure our app for deployment environments
+### Level 8 completed - ⭐⭐⭐⭐⭐⭐⭐⭐ 
+We learned how to use app configuration to configure our app for deployment environments
 
 ---
 
 ## Level 9 Write a first test
-- Add a xunit test project for the PokemonLib and create a refrence to it
-- Add a first test
+- Add a xunit test project for the PokemonLib and create a reference to it
+- Add a first test class
+- use the ``[Fact]`` data annotation to declare a test method
+- Write a test for the GetPokemonDetails method by using an assertion like ``Assert.True()``.
+
+<img width="482" alt="grafik" src="https://github.com/user-attachments/assets/deb8ab42-7447-40ad-8a45-eb8213f81e81" />
 
 ---
 
