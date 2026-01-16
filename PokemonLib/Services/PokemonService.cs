@@ -9,12 +9,10 @@ public class PokemonService : IPokemonService
 {
     private readonly ILogger<PokemonService> _logger;
     private readonly IPokemonApi _pokemonApi;
-    public PokemonService(ILogger<PokemonService> logger)
+    public PokemonService(IPokemonApi pokemonApi, ILogger<PokemonService> logger)
     {
         _logger = logger;
-        _logger.LogInformation("Using the real PokemonService");
-        var host = "https://pokeapi.co";
-        _pokemonApi = RestService.For<IPokemonApi>(host);
+        _pokemonApi = pokemonApi;
     }
     
     public async Task<PokemonList> GetPokemonListAsync()
