@@ -1,3 +1,4 @@
+using System.Runtime.Intrinsics;
 using PokemonLib.Services;
 using PokemonWebApi.Endpoints;
 using Scalar.AspNetCore;
@@ -10,8 +11,8 @@ builder.Services.AddOutputCache();
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapOpenApi(); // /openapi/v1.json
+    app.MapScalarApiReference(); // /scalar/v1.json
 }
 
 app.UseHttpsRedirection();
