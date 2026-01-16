@@ -7,8 +7,8 @@ using Spectre.Console;
 AnsiConsole.MarkupLine("[underline green]Hello, this is your pokedex. Have fun![/]");
 
 // http call to get a list of pokemon from the pokemon api:
-
-var pokemonService = new PokemonService(NullLogger<PokemonService>.Instance);
+var pokemonApi = RestService.For<IPokemonApi>("https://pokeapi.co");
+var pokemonService = new PokemonService(pokemonApi, NullLogger<PokemonService>.Instance);
 try
 {
     var pokemonList = await pokemonService.GetPokemonListAsync();
