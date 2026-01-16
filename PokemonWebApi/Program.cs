@@ -2,12 +2,17 @@ using System.Runtime.Intrinsics;
 using PokemonLib.Services;
 using PokemonWebApi.Endpoints;
 using Scalar.AspNetCore;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<PokemonService>();
 builder.Services.AddOutputCache();
 
+builder.Services.AddRefitClient<IPokemonApi>().ConfigureHttpClient(c =>
+{
+    c.BaseAddress = new Uri("https://pokeapi.co");
+});
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
