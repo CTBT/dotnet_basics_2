@@ -1,5 +1,4 @@
 @page "/pokemon/{name}"
-@using PokemonLib.Models
 @attribute [StreamRendering]
 @inject IPokemonService PokemonService
 
@@ -13,13 +12,18 @@
 }
 else
 {
-    <select @onchange="NavigateToPokemon" >
-        <option value="">All</option>
-        @foreach (var pokemon in _pokemons)
-        {
-            <option value="@pokemon.Name">@pokemon.Name</option>
-        }
-    </select>
+    
+<FluentSelect TOption="@PokemonListItem"
+              Label="Select a pokemon"
+              Items="@_pokemons"
+              Id="people-listbox"
+              Width="200px"
+              Height="250px"
+              Placeholder="Make a selection..."
+              OptionValue="@(p => p.Name)"
+              OptionText="@(p => p.Name)"
+              @bind-Value="@Name"
+              @onchange="NavigateToPokemon"/>
     
     <div>
         <h1>@_pokemon.Name</h1>
@@ -41,7 +45,7 @@ else
     public required string Name { get; set; }
 
     private string Url => $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/{_pokemon.Id}.png";
-    private PokemonLib.Models.Pokemon _pokemon;
+    private PokemonLib.Models.Pokemon? _pokemon;
     private List<PokemonListItem>? _pokemons;
 
     protected override async Task OnInitializedAsync()
@@ -55,8 +59,7 @@ else
         var selectedPokemon = (string)(e.Value ?? string.Empty);
         if (!string.IsNullOrEmpty(selectedPokemon))
         {
-            Name = selectedPokemon;
-            _pokemon = await PokemonService.GetPokemonDetails(Name);
+            _pokemon = await PokemonService.GetPokemonDetails(selectedPokemon);
             // Refresh
             StateHasChanged();
         }

@@ -1,7 +1,7 @@
 ﻿@page "/"
-@using PokemonLib.Models
 @inject IPokemonService PokemonService
 @attribute [StreamRendering]
+@inject NavigationManager NavigationManager
 <PageTitle>Pokedex</PageTitle>
 
 <h1>Pokedex</h1>
@@ -22,34 +22,34 @@ else
             <input @oninput="SetFilter" />
         </label>
     </p>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Pokemon</th>
-            <th>External pokeapi Url</th>
-        </tr>
-        </thead>
-        <tbody>
-        @if (_filteredPokemons != null)
-        {
-            foreach (var pokemon in _filteredPokemons)
+    <div>
+        <FluentOverflow>
+            <ChildContent>
+            @if (_filteredPokemons != null)
             {
-                <tr>
-                    <td><a href="/pokemon/@pokemon.Name">@pokemon.Name</a></td>
-                    <td><a href="@pokemon.Url" target="_blank">@pokemon.Url</a></td>
-                </tr>
+                foreach (var pokemon in _filteredPokemons)
+                {
+                    <FluentOverflowItem >
+
+                        <FluentButton Appearance="@Appearance.Accent" @onclick="() => NavigateToPokemon(pokemon.Name)">@pokemon.Name</FluentButton>
+                    </FluentOverflowItem>
+                }
             }
-        }
-        </tbody>
-    </table>
+                </ChildContent>
+        </FluentOverflow>
+    </div>
 }
 
 @code {
     private void SetFilter(ChangeEventArgs e)
     {
         var filter = (string)(e.Value ?? string.Empty);
-        _filteredPokemons = _pokemons?.Where(i => i.Name.Contains(filter));
+        _filteredPokemons = _pokemons?.Where(i => i.Name.Contains(filter)).Take(10);
+    }
+    
+    private void NavigateToPokemon(string name)
+    {
+        NavigationManager.NavigateTo($"/pokemon/{name}");
     }
     
     private List<PokemonListItem>? _pokemons;
@@ -57,7 +57,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         _pokemons = (await PokemonService.GetPokemonListAsync()).Results;
-        _filteredPokemons = _pokemons;
+        _filteredPokemons = _pokemons.Take(10);
     }
 
 }

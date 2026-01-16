@@ -1,3 +1,4 @@
+using Microsoft.FluentUI.AspNetCore.Components;
 using PokemonLib.Services;
 using PokemonPage.Components;
 
@@ -6,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddFluentUIComponents();
+builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton<IPokemonService, PokemonService>();
 var app = builder.Build();
