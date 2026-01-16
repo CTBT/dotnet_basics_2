@@ -1,15 +1,13 @@
 using PokemonLib.Models;
-using Refit;
 
 namespace PokemonLib.Services;
 
 public class PokemonService
 {
     private readonly IPokemonApi _pokemonApi;
-    public PokemonService()
+    public PokemonService(IPokemonApi pokemonApi)
     {
-        var host = "https://pokeapi.co";
-        _pokemonApi = RestService.For<IPokemonApi>(host);
+        _pokemonApi = pokemonApi;
     }
     
     public async Task<PokemonList> GetPokemonListAsync()
