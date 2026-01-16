@@ -162,9 +162,13 @@ Now we know how to structure our code to make it reusable
   ```c#
   app.MapGet("/pokemon", ...)
   ```
+- Use the Refit.HttpClientFactory package to add an IPokemonApi instance to the service collection:
+- ```c#
+  ... services.AddRefitClient<IPokemonApi>().ConfigureHttpClient(...)
+  ```
 
 HINT:
-- Use the dotnet dependency injection via constructor to provide a PokemonService instance
+- Use the [FromServices] in your endpoint mapping to get the PokemonService instance
   ```c#
   [FromServices] PokemonService service
   ```
@@ -277,7 +281,7 @@ We learned how to use app configuration to configure our app for deployment envi
 
 ---
 
-## Level 9 Write a first test
+## Level 9 Testing your code
 - Add a xunit test project for the PokemonLib and create a reference to it
 - Add a first test class
 - use the ``[Fact]`` data annotation to declare a test method
