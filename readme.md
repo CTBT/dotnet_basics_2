@@ -296,7 +296,20 @@ We learned how write and run tests for our code
 
 ---
 
-## Level 10 - Build your own UI with Blazor
+## Level 10 Use mocking to ensure fast and stable tests
+- Add ``Moq`` as a mocking library to your test code
+- Rewrite your test of the FetPokemnonDetails method to use a moq of the ``IPokemonapi.GetPokemonDetails(...)`` method
+- hint 1: create a mock like this: ``new Mock<IPokemonApi>()``
+- hint 2: use the ``.Setup(...)`` method on your mock instance to define your mock behavior
+
+---
+
+### Level 9 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+We learned how write and run tests for our code
+
+---
+
+## Level 11 - Build your own UI with Blazor
 - Add a Blazor Web App "PokemonPage" to your solution (RenderMode: Server, Interactivity Location: Global)
 - Create a razor page that calls the IPokemonService.GetPokemonListAsync() method to display a list of pokemons and provide a search functionality
 - Create a razor page that calls the IPokemonService.GetDetails() method to display pokemon detail information
@@ -309,7 +322,7 @@ Hints:
 
 ---
 
-### Level 10 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+### Level 11 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
 We learned how to create a web UI with Blazor
 
 ---
