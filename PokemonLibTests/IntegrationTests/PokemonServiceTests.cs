@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using PokemonLib.Services;
+using Refit;
 
 namespace PokemonLibTests;
 
@@ -9,7 +10,8 @@ public class PokemonServiceTests
 
     public PokemonServiceTests()
     {
-        _pokemonService = new PokemonService(NullLogger<PokemonService>.Instance);
+        var pokemonApi = RestService.For<IPokemonApi>("https://pokeapi.co");
+        _pokemonService = new PokemonService(pokemonApi, NullLogger<PokemonService>.Instance);
     }
 
     [Fact]
