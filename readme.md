@@ -16,7 +16,8 @@ Coding:
 - Provide your own API
 - Add some features
 - Make your app configurable for different environments
-- Write a first test
+- Testing your code
+- Creating a simple UI that requests data from the backend
 
 ---
 ## Basic Knowledge
