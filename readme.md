@@ -70,17 +70,19 @@ Now we know how to setup a new dotnet project
 The goal is to implement a request to the pokemon api and display the results in the console.
 The pokeapi pokemon list url can be found in the provided ``.http`` file.
 
-- Use the HttpClient class to make a get request to the pokemon api to retrieve a list of pokemons
+- The easiest way to make a request in .net:
   ```c#
   var client = new HttpClient();
+  client.GetAsync(...)
   ```
-- Use the JsonSerializer class to map the request response to typed model
+- Create the necessary model(s) for the pokemon list
+- Use the JsonSerializer class to deserialize the request response content to an object
   ```c#
   JsonSerializer.Deserialize<PokemonList>(...)
   ```
-- Display the results in the console (``Console.WriteLine``)
+- Display the results in the console (``Console.WriteLine``) with the help of the ``String.Join'' method
 
-Hint: Be aware of cases sensitivity of models
+Hint: Be aware of the attribut names and use  ``JsonSerializerOptions`` to define case insensitivity
 
 ---
 
