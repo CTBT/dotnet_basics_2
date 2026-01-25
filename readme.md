@@ -84,6 +84,7 @@ The pokeapi pokemon list url can be found in the provided ``.http`` file.
 
 Hint: Be aware of the attribut names and use  ``JsonSerializerOptions`` to define case insensitivity
 
+Bonus: Fetch exceptions
 ---
 
 ### Level 2 completed - ⭐⭐ 
@@ -91,16 +92,17 @@ Now we know how to query external http endpoints and work with request results
 
 ---
 
-## Level 3: Learn how to work with external packages
-The goal ist to simplify your code by using an external nuget package that is not part of the .net sdk
+## Level 3: Learn how to use the benefits of external nuget packages
+The goal ist to simplify and structure your code by using an external nuget package that is not part of the .net sdk
 Use the Refit library to make http calls to the pokemon api. Refit is a wrapper around the HttpClient class that ueses annotations to define external endpoints.
 
 - Add the [Refit](https://www.nuget.org/packages/refit/) http client library to the project (with your IDE´s package explorer or ``dotnet add``).
-- Annotate the `ÌPokemonApi` methods with a refit data annotation:
+- Create the interface that represents the pokemon api `ÌPokemonApi` with an annotated method:
   ```c#
-   [Get("/api/v2/pokemon?limit=10&offset=0")]
+  [Get("/api/v2/pokemon?limit=10&offset=0")]
+  public void GetPokemonList();
   ```
-- Create a refit RestService and us it to replace your existing HttpClient request
+- Create a refit RestService instanceand us it to replace your existing HttpClient request
   ```c#
   RestService.For<IPokemonApi>(host)
   ```
