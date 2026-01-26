@@ -15,7 +15,6 @@ try
     while (true)
     {
         // print the list of pokemon names:
-        AnsiConsole.Write(new Rule("[blue]Pokemon Index[/]"));
         var pokemonName = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Choose a pokemon:")
@@ -23,22 +22,20 @@ try
                 .MoreChoicesText("[grey](Move up and down to reveal more pokemon)[/]")
                 .AddChoices(pokemonList.Results.Select(i=> i.Name)));
     
+        AnsiConsole.WriteLine($"You selected: {pokemonName}");
         // get details of a random pokemon from the list:
         var details = await pokemonService.GetPokemonDetails(pokemonName);
-        // Create a list of Items
-
-        var style = new Style(Color.Yellow, Color.Black);
-        var rows = new List<Text> {
-            new($"Height: {details.Height}", style),
-            new($"Weight: {details.Weight}", style),
-            new($"Number of Moves: {details.Moves.Count()}", style),
-            new ($"Some Moves: {string.Join(",",details.Moves.Take(3).Select(i => i.Move.Name))}", style)
-        };
-        
-        var detailsPanel = new Panel(new Rows(rows));
-        detailsPanel.Header = new PanelHeader($"[bold yellow]{pokemonName}[/]", Justify.Center);
-        detailsPanel.Border = BoxBorder.Rounded;
-        AnsiConsole.Write(detailsPanel);
+        // Create a table with pokemon attributes
+        var table = new Table()
+            .RoundedBorder()
+            .BorderColor(Color.Blue);
+        table.AddColumn("Attribute");
+        table.AddColumn("Value");
+        table.AddRow("Height", details.Height.ToString());
+        table.AddRow("Weight", details.Weight.ToString());
+        table.AddRow("Number of Moves", details.Moves.Count().ToString());
+        table.AddRow("Example moves", string.Join(",",details.Moves.Take(3).Select(i => i.Move.Name)));
+        AnsiConsole.Write(table);
     }
 }
 catch (ApiException e)
