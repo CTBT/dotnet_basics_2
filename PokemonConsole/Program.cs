@@ -23,21 +23,6 @@ try
     
         AnsiConsole.WriteLine($"You selected: {pokemonName}");
         // get details of a random pokemon from the list:
-        var details = await pokemonService.GetPokemonDetails(pokemonName);
-        // Create a list of Items
-
-        var style = new Style(Color.Yellow, Color.Black);
-        var rows = new List<Text> {
-            new($"Height: {details.Height}", style),
-            new($"Weight: {details.Weight}", style),
-            new($"Number of Moves: {details.Moves?.Count()}", style),
-            new ($"Some Moves: {string.Join(",",details.Moves!.Take(3).Select(i => i.Move.Name))}", style)
-        };
-        
-        var detailsPanel = new Panel(new Rows(rows));
-        detailsPanel.Header = new PanelHeader($"[bold yellow]{pokemonName}[/]", Justify.Center);
-        detailsPanel.Border = BoxBorder.Rounded;
-        AnsiConsole.Write(detailsPanel);
         var details = await pokemonService.GetPokemonDetailsAsync(pokemonName);
         // Create a table with pokemon attributes
         var table = new Table()
