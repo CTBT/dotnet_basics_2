@@ -15,8 +15,8 @@ public class PokemonService
         return await _pokemonApi.GetPokemonListAsync(10000, 0);
     }
     
-    public async Task<Pokemon> GetPokemonDetails(string name)
+    public async Task<Pokemon> GetPokemonDetailsAsync(string name)
     {
-        return await _pokemonApi.GetPokemonDetails(name);
+        return await _pokemonApi.GetPokemonDetailsAsync(name);
     }
 }
