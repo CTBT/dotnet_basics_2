@@ -16,7 +16,8 @@ Coding:
 - Provide your own API
 - Add some features
 - Make your app configurable for different environments
-- Write a first test
+- Testing your code
+- Creating a simple UI that requests data from the backend
 
 ---
 ## Basic Knowledge
@@ -69,18 +70,21 @@ Now we know how to setup a new dotnet project
 The goal is to implement a request to the pokemon api and display the results in the console.
 The pokeapi pokemon list url can be found in the provided ``.http`` file.
 
-- Use the HttpClient class to make a get request to the pokemon api to retrieve a list of pokemons
+- The easiest way to make a request in .net:
   ```c#
   var client = new HttpClient();
+  client.GetAsync(...)
   ```
-- Use the JsonSerializer class to map the request response to typed model
+- Create the necessary model(s) for the pokemon list
+- Use the JsonSerializer class to deserialize the request response content to an object
   ```c#
   JsonSerializer.Deserialize<PokemonList>(...)
   ```
-- Display the results in the console (``Console.WriteLine``)
+- Display the results in the console (``Console.WriteLine``) with the help of the ``String.Join'' method
 
-Hint: Be aware of cases sensitivity of models
+Hint: Be aware of the attribut names and use  ``JsonSerializerOptions`` to define case insensitivity
 
+Bonus: Fetch exceptions
 ---
 
 ### Level 2 completed - ⭐⭐ 
@@ -88,20 +92,21 @@ Now we know how to query external http endpoints and work with request results
 
 ---
 
-## Level 3: Learn how to work with external packages
-The goal ist to simplify your code by using an external nuget package that is not part of the .net sdk
+## Level 3: Learn how to use the benefits of external nuget packages
+The goal ist to simplify and structure your code by using an external nuget package that is not part of the .net sdk
 Use the Refit library to make http calls to the pokemon api. Refit is a wrapper around the HttpClient class that ueses annotations to define external endpoints.
 
 - Add the [Refit](https://www.nuget.org/packages/refit/) http client library to the project (with your IDE´s package explorer or ``dotnet add``).
-- Annotate the `ÌPokemonApi` methods with a refit data annotation:
+- Create the interface that represents the pokemon api `ÌPokemonApi` with an annotated method:
   ```c#
-   [Get("/api/v2/pokemon?limit=10&offset=0")]
+  [Get("/api/v2/pokemon?limit=10&offset=0")]
+  public void GetPokemonList();
   ```
-- Create a refit RestService and us it to replace your existing HttpClient request
+- Create a refit RestService instance and use it to replace your existing HttpClient request
   ```c#
   RestService.For<IPokemonApi>(host)
   ```
-- Call the api again to request details of a random pokemon (width, height, moves)
+- Call the api again to request details of a (random) pokemon (width, height, moves)
 - display those details in the console
 
 ---
@@ -127,11 +132,7 @@ AnsiConsole.Prompt(
             .AddChoices(pokemonList.Results.Select(i=> i.Name)))
 ```
 - display information about the selected pokemon
-- bonus: styling
-
-Hints:
-- use a while loop to always provide the navigation menu to the user
-- you can use a panel or a table to display the information properly
+- bonus: styling (color, panel, table,...)
 
 ---
 
@@ -142,9 +143,10 @@ Now we know how to create an interactive console application
 
 ## Level 5: Make your Code reusable
 
+We want to make the data access code reusable by extracting it to a separate library.
 - Add a ``library`` project to your solution and move your code there
-- Provide a ``PokemonService`` class with public methods ``GetPokemonList`` and ``GetPokemonDetails``
-
+- Provide a ``PokemonService`` class with public methods to receive the pokemnon list and pokemon details
+- use a constructor and a private property to provide the IPokemonApi instance
 ---
 
 ### Level 5 completed - ⭐⭐⭐⭐⭐ 
@@ -162,9 +164,13 @@ Now we know how to structure our code to make it reusable
   ```c#
   app.MapGet("/pokemon", ...)
   ```
+- Use the Refit.HttpClientFactory package to add an IPokemonApi instance to the service collection:
+- ```c#
+  ... services.AddRefitClient<IPokemonApi>().ConfigureHttpClient(...)
+  ```
 
 HINT:
-- Use the dotnet dependency injection via constructor to provide a PokemonService instance
+- Use the [FromServices] in your endpoint mapping to get the PokemonService instance
   ```c#
   [FromServices] PokemonService service
   ```
@@ -277,7 +283,7 @@ We learned how to use app configuration to configure our app for deployment envi
 
 ---
 
-## Level 9 Write a first test
+## Level 9 Testing your code
 - Add a xunit test project for the PokemonLib and create a reference to it
 - Add a first test class
 - use the ``[Fact]`` data annotation to declare a test method
@@ -292,7 +298,20 @@ We learned how write and run tests for our code
 
 ---
 
-## Level 10 - Build your own UI with Blazor
+## Level 10 Use mocking to ensure fast and stable tests
+- Add ``Moq`` as a mocking library to your test code
+- Rewrite your test of the FetPokemnonDetails method to use a moq of the ``IPokemonapi.GetPokemonDetails(...)`` method
+- hint 1: create a mock like this: ``new Mock<IPokemonApi>()``
+- hint 2: use the ``.Setup(...)`` method on your mock instance to define your mock behavior
+
+---
+
+### Level 9 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+We learned how write and run tests for our code
+
+---
+
+## Level 11 - Build your own UI with Blazor
 - Add a Blazor Web App "PokemonPage" to your solution (RenderMode: Server, Interactivity Location: Global)
 - Create a razor page that calls the IPokemonService.GetPokemonListAsync() method to display a list of pokemons and provide a search functionality
 - Create a razor page that calls the IPokemonService.GetDetails() method to display pokemon detail information
@@ -305,7 +324,7 @@ Hints:
 
 ---
 
-### Level 10 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+### Level 11 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
 We learned how to create a web UI with Blazor
 
 ---
