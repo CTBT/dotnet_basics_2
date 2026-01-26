@@ -17,6 +17,6 @@ public class PokemonService
     
     public async Task<Pokemon> GetPokemonDetails(string name)
     {
-        return await _pokemonApi.GetPokemonDetails(name);
+        return await _pokemonApi.GetPokemonDetailsAsync(name);
     }
 }
