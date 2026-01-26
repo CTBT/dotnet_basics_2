@@ -9,5 +9,5 @@ public interface IPokemonApi
     Task<PokemonList> GetPokemonListAsync();
 
     [Get("/api/v2/pokemon/{name}")]
-    public Task<Pokemon> GetPokemonDetails(string name);
+    public Task<Pokemon> GetPokemonDetailsAsync(string name);
 }

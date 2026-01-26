@@ -19,7 +19,7 @@ try
     
     // get details of a random pokemon from the list:
     var randomId = new Random().Next(0, pokemonList.Results.Count - 1);
-    var details = await pokemonService.GetPokemonDetails(pokemonList.Results[randomId].Name);
+    var details = await pokemonService.GetPokemonDetailsAsync(pokemonList.Results[randomId].Name);
     Console.WriteLine($"Details of {details.Name}:");
     Console.WriteLine($"Height: {details.Height}");
     Console.WriteLine($"Weight: {details.Weight}");
