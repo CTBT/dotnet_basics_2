@@ -102,11 +102,11 @@ Use the Refit library to make http calls to the pokemon api. Refit is a wrapper 
   [Get("/api/v2/pokemon?limit=10&offset=0")]
   public void GetPokemonList();
   ```
-- Create a refit RestService instanceand us it to replace your existing HttpClient request
+- Create a refit RestService instance and use it to replace your existing HttpClient request
   ```c#
   RestService.For<IPokemonApi>(host)
   ```
-- Call the api again to request details of a random pokemon (width, height, moves)
+- Call the api again to request details of a (random) pokemon (width, height, moves)
 - display those details in the console
 
 ---
@@ -132,11 +132,7 @@ AnsiConsole.Prompt(
             .AddChoices(pokemonList.Results.Select(i=> i.Name)))
 ```
 - display information about the selected pokemon
-- bonus: styling
-
-Hints:
-- use a while loop to always provide the navigation menu to the user
-- you can use a panel or a table to display the information properly
+- bonus: styling (color, panel, table,...)
 
 ---
 
@@ -147,9 +143,10 @@ Now we know how to create an interactive console application
 
 ## Level 5: Make your Code reusable
 
+We want to make the data access code reusable by extracting it to a separate library.
 - Add a ``library`` project to your solution and move your code there
-- Provide a ``PokemonService`` class with public methods ``GetPokemonList`` and ``GetPokemonDetails``
-
+- Provide a ``PokemonService`` class with public methods to receive the pokemnon list and pokemon details
+- use a constructor and a private property to provide the IPokemonApi instance
 ---
 
 ### Level 5 completed - ⭐⭐⭐⭐⭐ 
