@@ -20,10 +20,11 @@ try
     // get details of a random pokemon from the list:
     var randomId = new Random().Next(0, pokemonList.Results.Count - 1);
     var details = await pokemonService.GetPokemonDetails(pokemonList.Results[randomId].Name);
-    Console.WriteLine($"Height of {details.Name}: {details.Height}");
-    Console.WriteLine($"Weight of {details.Name}: {details.Weight}");
-    Console.WriteLine($"Number of Moves of {details.Name}: {details.Moves.Count()}");
-    Console.WriteLine($"Number of Moves of {details.Name}: {string.Join(",",details.Moves.Select(i => i.Move.Name))}");
+    Console.WriteLine($"Details of {details.Name}:");
+    Console.WriteLine($"Height: {details.Height}");
+    Console.WriteLine($"Weight: {details.Weight}");
+    Console.WriteLine($"Number of Moves: {details.Moves.Count()}");
+    Console.WriteLine($"Moves of {details.Name}: {string.Join(",",details.Moves.Take(3).Select(i => i.Move.Name))}");
 }
 catch (ApiException e)
 {
