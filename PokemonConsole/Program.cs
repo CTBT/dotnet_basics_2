@@ -24,7 +24,7 @@ try
     
         AnsiConsole.WriteLine($"You selected: {pokemonName}");
         // get details of a random pokemon from the list:
-        var details = await pokemonService.GetPokemonDetails(pokemonName);
+        var details = await pokemonService.GetPokemonDetailsAsync(pokemonName);
         // Create a table with pokemon attributes
         var table = new Table()
             .RoundedBorder()
