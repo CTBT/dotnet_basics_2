@@ -40,9 +40,9 @@ try
 }
 catch (ApiException e)
 {
-    AnsiConsole.MarkupLine(e.StatusCode == HttpStatusCode.NotFound
-        ? $"[red]The requested resource could not be found: {e.Uri}[/]"
-        : $"[red]Pokemon api call to {e.Uri} failed[/]");
+    Console.WriteLine(e.StatusCode == HttpStatusCode.NotFound
+        ? $"The requested resource could not be found: {e.Uri} "
+        : $"Pokemon api call to {e.Uri} failed");
     throw;
 }
 
