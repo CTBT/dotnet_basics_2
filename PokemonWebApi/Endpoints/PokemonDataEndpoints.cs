@@ -13,6 +13,6 @@ public static class PokemonDataEndpoints
     
     public static async Task<Pokemon> GetPokemon([FromServices] PokemonService service, [FromRoute] string name)
     {
-        return await service.GetPokemonDetails(name);
+        return await service.GetPokemonDetailsAsync(name);
     }
 }
