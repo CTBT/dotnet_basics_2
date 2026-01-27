@@ -16,7 +16,7 @@ public static class PokemonDataEndpoints
         [FromServices] PokemonService service, 
         [FromRoute] string name)
     {
-        var pokemon = await service.GetPokemonDetails(name);
+        var pokemon = await service.GetPokemonDetailsAsync(name);
         return pokemon is null ? TypedResults.NotFound() : TypedResults.Ok(pokemon);
     }
 }
