@@ -145,7 +145,7 @@ Now we know how to create an interactive console application
 
 We want to make the data access code reusable by extracting it to a separate library.
 - Add a ``library`` project to your solution and move your code there
-- Provide a ``PokemonService`` class with public methods to receive the pokemnon list and pokemon details
+- Provide a ``PokemonService`` class with public methods to receive the pokemon list and details of a pokemon
 - use a constructor and a private property to provide the IPokemonApi instance
 ---
 
@@ -164,13 +164,13 @@ Now we know how to structure our code to make it reusable
   ```c#
   app.MapGet("/pokemon", ...)
   ```
-- Use the Refit.HttpClientFactory package to add an IPokemonApi instance to the service collection:
+- Use the ``Refit.HttpClientFactory``nuget package to add an IPokemonApi instance to the service collection:
 - ```c#
   ... services.AddRefitClient<IPokemonApi>().ConfigureHttpClient(...)
   ```
 
 HINT:
-- Use the [FromServices] in your endpoint mapping to get the PokemonService instance
+- Use the [FromServices] annotation in your endpoint mapping to inject that dependency into your mapping
   ```c#
   [FromServices] PokemonService service
   ```
@@ -229,9 +229,9 @@ return TypedResults.Ok(pokemon);
 ```c#
 ILogger<PokemonService> logger
 ```
-- Add an ``information`` log whenever a pokemon will be requested from the external api and add his name to the log
+- Add a ``debug`` log whenever a pokemon will be requested from the external api and add his name to the log
 - Additionally add a ``warning`` log if a pokemon was not found
-- Configure your ``appsettings`` file to disable the information log level for the PokemonLib namespace:
+- Configure your ``appsettings`` file to enable the debug log level for the PokemonLib namespace
 
 ---
 
