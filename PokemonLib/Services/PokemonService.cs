@@ -22,19 +22,15 @@ public class PokemonService : IPokemonService
     
     public async Task<Pokemon?> GetPokemonDetailsAsync(string name)
     {
-        try
+        _logger.LogInformation("Requesting details for pokemon {Name} from the pokeapi", name);
+        var result = await _pokemonApi.GetPokemonDetailsAsync(name);
+        
+        if (result.StatusCode == HttpStatusCode.NotFound)
         {
-            _logger.LogInformation("Requesting details for pokemon {Name} from the pokeapi", name);
-            return await _pokemonApi.GetPokemonDetailsAsync(name);
+            _logger.LogWarning("Pokemon {Name} was not found in the external api", name);
+            return null;
         }
-        catch (ApiException e)
-        {
-            if (e.StatusCode == HttpStatusCode.NotFound)
-            {
-                _logger.LogWarning("Pokemon {Name} was not found in the external api", name);
-                return null;
-            }
-            throw;
-        }
+        
+        return result.Content;
     }
 }
