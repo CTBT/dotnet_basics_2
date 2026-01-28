@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
+using PokemonLib.Database;
 using PokemonLib.Services;
 using PokemonPage.Components;
 using Refit;
@@ -15,7 +17,15 @@ builder.Services.AddRefitClient<IPokemonApi>()
 builder.Services.AddFluentUIComponents();
 builder.Services.AddHttpClient();
 
-builder.Services.AddSingleton<IPokemonService, PokemonService>();
+builder.Services.AddScoped<IPokemonService, PokemonDbCacheService>();
+
+// sqlite db
+builder.Services.AddDbContext<PokemonDbContext>(options =>
+{
+    options.UseSqlite("Data Source=pokemon.db");
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
