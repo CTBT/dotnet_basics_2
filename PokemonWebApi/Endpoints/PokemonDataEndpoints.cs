@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using PokemonLib.Models;
 using PokemonLib.Services;
@@ -11,7 +12,7 @@ public static class PokemonDataEndpoints
         return await service.GetPokemonListAsync();
     }
     
-    public static async Task<Pokemon> GetPokemon([FromServices] PokemonService service, [FromRoute] string name)
+    public static async Task<Results<Ok<Pokemon>, NotFound>> GetPokemon([FromServices] PokemonService service, [FromRoute] string name)
     {
         var pokemon = await service.GetPokemonDetailsAsync(name);
         return pokemon is null ? TypedResults.NotFound() : TypedResults.Ok(pokemon);
