@@ -307,6 +307,8 @@ We learned to leverage mocking to effectively write tests for a single layer of 
 ---
 
 ## Level 11 - Build your own UI with Blazor
+Add a simple ui based on the Blazor Framework to display pokemon data.
+
 - Add a Blazor Web App "PokemonPage" to your solution (RenderMode: Server, Interactivity Location: Global)
 - Create a razor page that calls the IPokemonService.GetPokemonListAsync() method to display a list of pokemons and provide a search functionality
 - Create a razor page that calls the IPokemonService.GetDetails() method to display pokemon detail information
@@ -324,7 +326,68 @@ We learned how to create a web UI with Blazor
 
 ---
 
-# Further things to know (to be continued)
-- How to use different testing strategies
-- How to observe our app with metrics and structured logs
-- How to persist external data in your system
+## Level 13 - Persist your data
+Now we will use the Entity Framework as a technology to select and create a sqlite database
+
+- Add the ``Microsoft.EntityFrameworkCore`` and ``Microsoft.EntityFrameworkCore.Sqlite`` nuget packages to the PokemonLib
+- Create a new class derived from the base class ``DbContext``:
+```c#
+  public class PokemonDbContext: DbContext
+{
+    public PokemonDbContext(DbContextOptions<PokemonDbContext> options) : base(options)
+    {
+    }
+
+    public DbSet<DbPokemon> Pokemons { get; set; }
+    
+    public DbSet<DbMove> Moves { get; set; }
+}
+```
+- create database model classes for DbPokemon and DbMove
+- define id attributes as primary keys by using the [Key] annotation
+- copy the ``PokemonService``class to make a ``PokemonDbCacheService`` that injects the ``PokemonDbContext``
+- make sure the database schema is created by calling ``_pokemonDbContext.Database.EnsureCreated()`` at least once
+- the data request logic can now be improved by checking the database for data:
+```c#
+          if (_pokemonDbContext.Pokemons.Any(p => p.Name == name))
+        {
+            var dbItem = _pokemonDbContext.Pokemons
+                .Include(i => i.Moves)
+                .First(p => p.Name == name);
+            return new Pokemon()
+            {
+                Id =  dbItem.Id,
+                Name = dbItem.Name,
+                Height = dbItem.Height,
+                Weight = dbItem.Weight,
+                Moves = dbItem.Moves.Select(i => new MoveListItem() { Move = new Move(i.Name) }).ToList()
+            };
+        }
+  ```
+
+  - saving a pokemon after requesting the external service works like that:
+  ```c#
+          var dbPokemon = new DbPokemon()
+        {
+            Id = result.Content.Id,
+            Name = result.Content.Name,
+            Height = result.Content.Height,
+            Weight = result.Content.Weight,
+            Moves = result.Content.Moves.Select(m => new DbMove() { Name = m.Move.Name }).ToList()
+        };
+        _pokemonDbContext.Pokemons.Add(dbPokemon);
+        await _pokemonDbContext.SaveChangesAsync();
+  ```
+
+- now we are finally ready to use the new PokemonDbCacheService in our application. Use it in the ``PokemonPage``project like this:
+```c#
+builder.Services.AddDbContext<PokemonDbContext>(options =>
+{
+    options.UseSqlite("Data Source=pokemon.db");
+});
+builder.Services.AddScoped<IPokemonService, PokemonDbCacheService>();
+```
+
+### Level 13 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
+We learned how to use ef core to cache data in a database
+---
