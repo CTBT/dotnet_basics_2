@@ -184,7 +184,7 @@ We learned how to create an API project, define endpoints and use dependency inj
 
 ---
 
-## Level 7: Add some features
+## Level 7: Improve the api
 
  #### Provide an openapi UI for your team 
  - Reference the [Scalar](https://www.nuget.org/packages/Scalar.AspNetCore) package
@@ -241,6 +241,9 @@ We learned how to make our application more robust, scalabale and with well defi
 ---
 
 ## Level 8: Make your app configurable for different environments
+
+The idea is to be able to work with test data insted of the real external api
+
 - Create an Interface IPokemonService and implement it in the PokemonService
 ```c#
 public class PokemonService : IPokemonService
@@ -254,26 +257,18 @@ builder.Services.AddScoped<IPokemonService, PokemonService>();
 ```c#
 Results = Enumerable.Range(1, 2000).Select(i => new PokemonListItem ...
 ```
-- GetPokemonDetails: return a new pokemon instance with test values and the name given name
+- GetPokemonDetails: return the requested pokemon with generated test values
 
-- Add a configuration value to your appsettings that makes you choose the  type you want to use:
+- Configure your dev environment to use that test class
 ```c#
   "ServiceOptions": {
     "UseTestData": false
   }
 ```
 
-- inject the IPokemonService implementation depending on the configuration value
+- populate your service collection with a IPokemonService type depending on the configuration value
 ```c#
 var useTestData = builder.Configuration.GetValue<bool>("ServiceOptions:UseTestData");
-if (useTestData)
-{
-    ...
-}
-else
-{
-    ...
-}
 ```
 
 ---
