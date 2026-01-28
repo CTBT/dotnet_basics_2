@@ -1,12 +1,16 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using PokemonLib.Services;
 using PokemonPage.Components;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddRefitClient<IPokemonApi>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://pokeapi.co"));
 
 builder.Services.AddFluentUIComponents();
 builder.Services.AddHttpClient();
