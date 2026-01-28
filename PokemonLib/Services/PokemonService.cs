@@ -22,7 +22,7 @@ public class PokemonService : IPokemonService
     
     public async Task<Pokemon?> GetPokemonDetailsAsync(string name)
     {
-        _logger.LogInformation("Requesting details for pokemon {Name} from the pokeapi", name);
+        _logger.LogDebug("Requesting details for pokemon {Name} from the pokeapi", name);
         var result = await _pokemonApi.GetPokemonDetailsAsync(name);
         
         if (result.StatusCode == HttpStatusCode.NotFound)
