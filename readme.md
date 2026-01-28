@@ -145,7 +145,7 @@ Now we know how to create an interactive console application
 
 We want to make the data access code reusable by extracting it to a separate library.
 - Add a ``library`` project to your solution and move your code there
-- Provide a ``PokemonService`` class with public methods to receive the pokemnon list and pokemon details
+- Provide a ``PokemonService`` class with public methods to receive the pokemon list and details of a pokemon
 - use a constructor and a private property to provide the IPokemonApi instance
 ---
 
@@ -164,13 +164,13 @@ Now we know how to structure our code to make it reusable
   ```c#
   app.MapGet("/pokemon", ...)
   ```
-- Use the Refit.HttpClientFactory package to add an IPokemonApi instance to the service collection:
+- Use the ``Refit.HttpClientFactory``nuget package to add an IPokemonApi instance to the service collection:
 - ```c#
   ... services.AddRefitClient<IPokemonApi>().ConfigureHttpClient(...)
   ```
 
 HINT:
-- Use the [FromServices] in your endpoint mapping to get the PokemonService instance
+- Use the [FromServices] annotation in your endpoint mapping to inject that dependency into your mapping
   ```c#
   [FromServices] PokemonService service
   ```
@@ -184,7 +184,7 @@ We learned how to create an API project, define endpoints and use dependency inj
 
 ---
 
-## Level 7: Add some features
+## Level 7: Improve the api
 
  #### Provide an openapi UI for your team 
  - Reference the [Scalar](https://www.nuget.org/packages/Scalar.AspNetCore) package
@@ -229,9 +229,9 @@ return TypedResults.Ok(pokemon);
 ```c#
 ILogger<PokemonService> logger
 ```
-- Add an ``information`` log whenever a pokemon will be requested from the external api and add his name to the log
+- Add a ``debug`` log whenever a pokemon will be requested from the external api and add his name to the log
 - Additionally add a ``warning`` log if a pokemon was not found
-- Configure your ``appsettings`` file to disable the information log level for the PokemonLib namespace:
+- Configure your ``appsettings`` file to enable the debug log level for the PokemonLib namespace
 
 ---
 
@@ -241,6 +241,9 @@ We learned how to make our application more robust, scalabale and with well defi
 ---
 
 ## Level 8: Make your app configurable for different environments
+
+The idea is to be able to work with test data insted of the real external api
+
 - Create an Interface IPokemonService and implement it in the PokemonService
 ```c#
 public class PokemonService : IPokemonService
@@ -254,26 +257,18 @@ builder.Services.AddScoped<IPokemonService, PokemonService>();
 ```c#
 Results = Enumerable.Range(1, 2000).Select(i => new PokemonListItem ...
 ```
-- GetPokemonDetails: return a new pokemon instance with test values and the name given name
+- GetPokemonDetails: return the requested pokemon with generated test values
 
-- Add a configuration value to your appsettings that makes you choose the  type you want to use:
+- Configure your dev environment to use that test class
 ```c#
   "ServiceOptions": {
     "UseTestData": false
   }
 ```
 
-- inject the IPokemonService implementation depending on the configuration value
+- populate your service collection with a IPokemonService type depending on the configuration value
 ```c#
 var useTestData = builder.Configuration.GetValue<bool>("ServiceOptions:UseTestData");
-if (useTestData)
-{
-    ...
-}
-else
-{
-    ...
-}
 ```
 
 ---
@@ -287,7 +282,7 @@ We learned how to use app configuration to configure our app for deployment envi
 - Add a xunit test project for the PokemonLib and create a reference to it
 - Add a first test class
 - use the ``[Fact]`` data annotation to declare a test method
-- Write a test for the GetPokemonDetails method by using an assertion like ``Assert.True()``.
+- Write a test for the GetPokemonDetails method (for now without mocking) by using an assertion like ``Assert.True(...)``.
 
 <img width="482" alt="grafik" src="https://github.com/user-attachments/assets/deb8ab42-7447-40ad-8a45-eb8213f81e81" />
 
@@ -306,8 +301,8 @@ We learned how write and run tests for our code
 
 ---
 
-### Level 9 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
-We learned how write and run tests for our code
+### Level 10 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+We learned to leverage mocking to effectively write tests for a single layer of our application
 
 ---
 
