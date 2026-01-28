@@ -301,7 +301,7 @@ We learned how write and run tests for our code
 
 ---
 
-### Level 10 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+### Level 10 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 We learned to leverage mocking to effectively write tests for a single layer of our application
 
 ---
@@ -319,7 +319,7 @@ Hints:
 
 ---
 
-### Level 11 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+### Level 11 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 We learned how to create a web UI with Blazor
 
 ---
