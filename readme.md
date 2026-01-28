@@ -282,7 +282,7 @@ We learned how to use app configuration to configure our app for deployment envi
 - Add a xunit test project for the PokemonLib and create a reference to it
 - Add a first test class
 - use the ``[Fact]`` data annotation to declare a test method
-- Write a test for the GetPokemonDetails method by using an assertion like ``Assert.True()``.
+- Write a test for the GetPokemonDetails method (for now without mocking) by using an assertion like ``Assert.True(...)``.
 
 <img width="482" alt="grafik" src="https://github.com/user-attachments/assets/deb8ab42-7447-40ad-8a45-eb8213f81e81" />
 
@@ -301,8 +301,8 @@ We learned how write and run tests for our code
 
 ---
 
-### Level 9 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
-We learned how write and run tests for our code
+### Level 10 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+We learned to leverage mocking to effectively write tests for a single layer of our application
 
 ---
 
