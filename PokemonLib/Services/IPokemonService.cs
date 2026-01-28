@@ -5,5 +5,5 @@ namespace PokemonLib.Services;
 public interface IPokemonService
 {
     Task<PokemonList> GetPokemonListAsync();
-    Task<Pokemon?> GetPokemonDetails(string name);
+    Task<Pokemon?> GetPokemonDetailsAsync(string name);
 }

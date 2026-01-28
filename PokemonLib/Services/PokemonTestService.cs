@@ -6,35 +6,36 @@ namespace PokemonLib.Services;
 public class PokemonTestService : IPokemonService
 {
     private readonly ILogger<PokemonTestService> _logger;
+    private readonly List<PokemonListItem> _items;
+
     public PokemonTestService(ILogger<PokemonTestService> logger)
     {
         _logger = logger;
         _logger.LogInformation("Using the fake PokemonService");
+        _items = Enumerable.Range(1, 2000).Select(i => new PokemonListItem
+        {
+            Name = $"Pokemon_{i}",
+            Url = $"https://pokeapi.co/api/v2/pokemon/{i}/"
+        }).ToList();
     }
     
-    public async Task<PokemonList> GetPokemonListAsync()
+    public Task<PokemonList> GetPokemonListAsync()
     {
-        return new PokemonList()
-        {
-            Results = Enumerable.Range(1, 2000).Select(i => new PokemonListItem
-            {
-                Name = $"Pokemon_{i}",
-                Url = $"https://pokeapi.co/api/v2/pokemon/{i}/"
-            }).ToList()
-        };
+        return Task.FromResult(new PokemonList {Results = _items, });
     }
     
-    public async Task<Pokemon?> GetPokemonDetails(string name)
+    public Task<Pokemon?> GetPokemonDetailsAsync(string name)
     {
-        return new Pokemon()
+        var item = _items.FirstOrDefault(i => i.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        return item is null ? null : Task.FromResult(new Pokemon()
         {
-            Name = name,
+            Name = item?.Name,
             Height = 10,
             Weight = 100,
             Moves = new List<MoveListItem>
             {
                 new() { Move = new Move(name: "Move1") }, new() {Move = new Move(name: "Move2") }
             }
-        };
+        });
     }
 }

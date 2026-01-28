@@ -50,7 +50,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _pokemon = (await PokemonService.GetPokemonDetails(Name))!;
+        _pokemon = (await PokemonService.GetPokemonDetailsAsync(Name))!;
         _pokemons = (await PokemonService.GetPokemonListAsync()).Results;
     }
     
@@ -59,7 +59,7 @@ else
         var selectedPokemon = (string)(e.Value ?? string.Empty);
         if (!string.IsNullOrEmpty(selectedPokemon))
         {
-            _pokemon = await PokemonService.GetPokemonDetails(selectedPokemon);
+            _pokemon = await PokemonService.GetPokemonDetailsAsync(selectedPokemon);
             // Refresh
             StateHasChanged();
         }
