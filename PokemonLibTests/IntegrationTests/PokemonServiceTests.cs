@@ -21,7 +21,7 @@ public class PokemonServiceTests
         var pokemons = (await _pokemonService.GetPokemonListAsync()).Results;
         var expectedName = pokemons.First().Name;
         // act
-        var result = await _pokemonService.GetPokemonDetails(expectedName);
+        var result = await _pokemonService.GetPokemonDetailsAsync(expectedName);
 
         // assert
         Assert.True(result.Name == expectedName);
