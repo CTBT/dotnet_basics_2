@@ -18,6 +18,7 @@ Coding:
 - Make your app configurable for different environments
 - Testing your code
 - Creating a simple UI that requests data from the backend
+- Use a database to persist your data
 
 ---
 ## Basic Knowledge
