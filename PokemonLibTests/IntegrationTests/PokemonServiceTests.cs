@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using PokemonLib.Models;
-using PokemonLib.Services;
+using PokemonLib.PokeApi.Services;
 using Refit;
 
 namespace PokemonLibTests;

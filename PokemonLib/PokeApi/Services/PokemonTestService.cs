@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using PokemonLib.Models;
 
-namespace PokemonLib.Services;
+namespace PokemonLib.PokeApi.Services;
 
 public class PokemonTestService : IPokemonService
 {

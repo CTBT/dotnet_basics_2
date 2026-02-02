@@ -3,20 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PokemonLib.Database;
 using PokemonLib.Models;
-using Refit;
 
-namespace PokemonLib.Services;
+namespace PokemonLib.PokeApi.Services;
 
 public class PokemonDbCacheService : IPokemonService
 {
-    private readonly ILogger<PokemonService> _logger;
-    private readonly PokemonDbContext _pokemonDbContext;
+    private readonly ILogger<PokemonDbCacheService> _logger;
+    private readonly PokemonDbContext _context;
     private readonly IPokemonApi _pokemonApi;
-    public PokemonDbCacheService(IPokemonApi pokemonApi, ILogger<PokemonService> logger, PokemonDbContext pokemonDbContext)
+    public PokemonDbCacheService(IPokemonApi pokemonApi, ILogger<PokemonDbCacheService> logger, PokemonDbContext context)
     {
         _logger = logger;
-        _pokemonDbContext = pokemonDbContext;
-        _pokemonDbContext.Database.EnsureCreated();
+        _context = context;
+        _context.Database.EnsureCreated();
         _pokemonApi = pokemonApi;
     }
     
@@ -27,11 +26,12 @@ public class PokemonDbCacheService : IPokemonService
     
     public async Task<Pokemon?> GetPokemonDetailsAsync(string name)
     {
-        if (_pokemonDbContext.Pokemons.Any(p => p.Name == name))
+        var dbItem = await _context.Pokemons
+            .Include(i => i.Moves)
+            .SingleOrDefaultAsync(p => p.Name == name);
+
+        if (dbItem is not null)
         {
-            var dbItem = _pokemonDbContext.Pokemons
-                .Include(i => i.Moves)
-                .First(p => p.Name == name);
             return new Pokemon()
             {
                 Id =  dbItem.Id,
@@ -59,8 +59,9 @@ public class PokemonDbCacheService : IPokemonService
             Weight = result.Content.Weight,
             Moves = result.Content.Moves.Select(m => new DbMove() { Name = m.Move.Name }).ToList()
         };
-        _pokemonDbContext.Pokemons.Add(dbPokemon);
-        await _pokemonDbContext.SaveChangesAsync();
+        _context.Pokemons.Add(dbPokemon);
+        await _context.SaveChangesAsync();
+        
         return result.Content;
 
     }

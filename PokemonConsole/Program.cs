@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using Microsoft.Extensions.Logging.Abstractions;
-using PokemonLib.Services;
+using PokemonLib.PokeApi.Services;
 using Refit;
 using Spectre.Console;
 

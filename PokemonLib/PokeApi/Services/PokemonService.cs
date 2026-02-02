@@ -1,9 +1,8 @@
 using System.Net;
 using Microsoft.Extensions.Logging;
 using PokemonLib.Models;
-using Refit;
 
-namespace PokemonLib.Services;
+namespace PokemonLib.PokeApi.Services;
 
 public class PokemonService : IPokemonService
 {

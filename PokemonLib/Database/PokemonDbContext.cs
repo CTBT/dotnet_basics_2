@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using PokemonLib.Models;
 
 namespace PokemonLib.Database;
 

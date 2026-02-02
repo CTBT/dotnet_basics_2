@@ -1,5 +1,5 @@
 using System.Runtime.Intrinsics;
-using PokemonLib.Services;
+using PokemonLib.PokeApi.Services;
 using PokemonWebApi.Endpoints;
 using Scalar.AspNetCore;
 using Refit;

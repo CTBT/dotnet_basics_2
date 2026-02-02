@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 using PokemonLib.Database;
-using PokemonLib.Services;
+using PokemonLib.PokeApi.Services;
 using PokemonPage.Components;
 using Refit;
 
