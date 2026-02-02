@@ -328,24 +328,31 @@ We learned how to create a web UI with Blazor
 ---
 
 ## Level 13 - Persist your data
-Now we will use the Entity Framework as a technology to select and create a sqlite database
+Now we will use the Entity Framework (see [Docs](https://learn.microsoft.com/de-de/ef/core/get-started/overview/first-app?tabs=netcore-cli)) as a technology to persist data in a light-weight database
+
+### Setup the database context for sqlite
 
 - Add the ``Microsoft.EntityFrameworkCore`` and ``Microsoft.EntityFrameworkCore.Sqlite`` nuget packages to the PokemonLib
 - Create a new class derived from the base class ``DbContext``:
 ```c#
-  public class PokemonDbContext: DbContext
+public class PokemonDbContext: DbContext
 {
-    public PokemonDbContext(DbContextOptions<PokemonDbContext> options) : base(options)
-    {
-    }
-
+    public PokemonDbContext(DbContextOptions<PokemonDbContext> options) : base(options){}
     public DbSet<DbPokemon> Pokemons { get; set; }
-    
     public DbSet<DbMove> Moves { get; set; }
 }
 ```
-- create database model classes for DbPokemon and DbMove
-- define id attributes as primary keys by using the [Key] annotation
+- create classes for your database tables DbPokemon and DbMove and define primary keys ([Key] annotation)
+- register the context to your application:
+```c#
+builder.Services.AddDbContext<PokemonDbContext>(options =>
+{
+    options.UseSqlite("Data Source=pokemon.db");
+});
+```
+
+### Use the context to cache pokemon data
+
 - copy the ``PokemonService``class to make a ``PokemonDbCacheService`` that injects the ``PokemonDbContext``
 - make sure the database schema is created by calling ``_pokemonDbContext.Database.EnsureCreated()`` at least once
 - the data request logic can now be improved by checking the database for data:
@@ -382,10 +389,6 @@ Now we will use the Entity Framework as a technology to select and create a sqli
 
 - now we are finally ready to use the new PokemonDbCacheService in our application. Use it in the ``PokemonPage``project like this:
 ```c#
-builder.Services.AddDbContext<PokemonDbContext>(options =>
-{
-    options.UseSqlite("Data Source=pokemon.db");
-});
 builder.Services.AddScoped<IPokemonService, PokemonDbCacheService>();
 ```
 
