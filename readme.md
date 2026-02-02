@@ -354,40 +354,40 @@ builder.Services.AddDbContext<PokemonDbContext>(options =>
 ### Use the context to cache pokemon data
 
 - copy the ``PokemonService``class to make a ``PokemonDbCacheService`` that injects the ``PokemonDbContext``
-- make sure the database schema is created by calling ``_pokemonDbContext.Database.EnsureCreated()`` at least once
+- make sure the database schema is created by calling ``.Database.EnsureCreated()`` on the context before using it
 - the data request logic can now be improved by checking the database for data:
 ```c#
-          if (_pokemonDbContext.Pokemons.Any(p => p.Name == name))
-        {
-            var dbItem = _pokemonDbContext.Pokemons
-                .Include(i => i.Moves)
-                .First(p => p.Name == name);
-            return new Pokemon()
-            {
-                Id =  dbItem.Id,
-                Name = dbItem.Name,
-                Height = dbItem.Height,
-                Weight = dbItem.Weight,
-                Moves = dbItem.Moves.Select(i => new MoveListItem() { Move = new Move(i.Name) }).ToList()
-            };
-        }
+if (dbItem is not null)
+{
+
+    return new Pokemon()
+    {
+        Id =  dbItem.Id,
+        Name = dbItem.Name,
+        Height = dbItem.Height,
+        Weight = dbItem.Weight,
+        Moves = dbItem.Moves
+            .Select(i => new MoveListItem() { Move = new Move(i.Name) })
+            .ToList()
+    };
+}
   ```
 
   - saving a pokemon after requesting the external service works like that:
   ```c#
-          var dbPokemon = new DbPokemon()
-        {
-            Id = result.Content.Id,
-            Name = result.Content.Name,
-            Height = result.Content.Height,
-            Weight = result.Content.Weight,
-            Moves = result.Content.Moves.Select(m => new DbMove() { Name = m.Move.Name }).ToList()
-        };
-        _pokemonDbContext.Pokemons.Add(dbPokemon);
-        await _pokemonDbContext.SaveChangesAsync();
+var dbPokemon = new DbPokemon()
+{
+    Id = result.Content.Id,
+    Name = result.Content.Name,
+    Height = result.Content.Height,
+    Weight = result.Content.Weight,
+    Moves = result.Content.Moves.Select(m => new DbMove() { Name = m.Move.Name }).ToList()
+};
+_pokemonDbContext.Pokemons.Add(dbPokemon);
+await _pokemonDbContext.SaveChangesAsync();
   ```
 
-- now we are finally ready to use the new PokemonDbCacheService in our application. Use it in the ``PokemonPage``project like this:
+- now we are  ready to replace the existing ``PokemonService`` in our ``PokemonPage`` application:
 ```c#
 builder.Services.AddScoped<IPokemonService, PokemonDbCacheService>();
 ```
