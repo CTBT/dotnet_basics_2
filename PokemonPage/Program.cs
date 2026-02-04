@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
+using PokemonLib;
 using PokemonLib.Database;
 using PokemonLib.PokeApi.Services;
 using PokemonPage.Components;
@@ -18,6 +19,8 @@ builder.Services.AddFluentUIComponents();
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<IPokemonService, PokemonDbCacheService>();
+
+builder.Services.AddHostedService<PokemonSyncJob>();
 
 // sqlite db
 builder.Services.AddDbContext<PokemonDbContext>(options =>

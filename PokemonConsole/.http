@@ -1,5 +1,5 @@
 ### get a list of pokemons
-GET https://pokeapi.co/api/v2/pokemon?limit=100&offset=0
+GET https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0
 
 ### get pokemon list from local api
 GET http://localhost:5063/pokemon

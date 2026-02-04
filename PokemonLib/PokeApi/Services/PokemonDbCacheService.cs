@@ -15,7 +15,6 @@ public class PokemonDbCacheService : IPokemonService
     {
         _logger = logger;
         _context = context;
-        _context.Database.EnsureCreated();
         _pokemonApi = pokemonApi;
     }
     
