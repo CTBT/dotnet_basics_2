@@ -394,6 +394,7 @@ builder.Services.AddScoped<IPokemonService, PokemonDbCacheService>();
 
 ### Level 13 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 We learned how to use ef core to cache data in a database
+
 ---
 
 ## Level 14: Initial data sync
