@@ -395,3 +395,91 @@ builder.Services.AddScoped<IPokemonService, PokemonDbCacheService>();
 ### Level 13 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 We learned how to use ef core to cache data in a database
 ---
+
+## Level 14: Initial data sync
+
+Current state:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              BLAZOR SERVER SIDE                              │
+│                                                                              │
+│  ┌───────────────────────────────────────────────────────────────────────┐   │
+│  │                       PokemonPage (Blazor)                            │   │
+│  │                  Components/Pages/Pokemon.razor                       │   │
+│  │                                                                       │   │
+│  │  • Empfängt Name als Route-Parameter (/pokemon/{name})                │   │
+│  │  • Zeigt Pokemon-Details an                                           │   │
+│  │  • Rendert UI mit @StreamRendering                                    │   │
+│  └───────────────────┬───────────────────────────────────────────────────┘   │
+│                      │                                                       │
+│                      │ @inject IPokemonService                               │
+│                      │                                                       │
+│                      ▼                                                       │
+│  ┌───────────────────────────────────────────────────────────────────────┐   │
+│  │                        IPokemonService                                │   │
+│  │              (Interface - Dependency Injection)                       │   │
+│  │                                                                       │   │
+│  │  Methoden:                                                            │   │
+│  │  • GetPokemonListAsync() → PokemonList                                │   │
+│  │  • GetPokemonDetailsAsync(name) → Pokemon?                            │   │
+│  └───────────────────┬───────────────────────────────────────────────────┘   │
+│                      │                                                       │
+│                      │ Implementation (DI: Scoped)                           │
+│                      │                                                       │
+│                      ▼                                                       │
+│  ┌───────────────────────────────────────────────────────────────────────┐   │
+│  │                    PokemonDbCacheService                              │   │
+│  │         PokemonLib/PokeApi/Services/PokemonDbCacheService.cs          │   │
+│  │                                                                       │   │
+│  │  Cache-Strategie:                                                     │   │
+│  │  1. Prüfe SQLite Datenbank                                            │   │
+│  │  2. Falls nicht vorhanden → API Call                                  │   │
+│  │  3. Speichere API-Ergebnis in DB                                      │   │
+│  │  4. Gebe Daten zurück                                                 │   │
+│  └───────┬───────────────────────────────────────────┬───────────────────┘   │
+│          │                                           │                       │
+│          │ DbContext (EF Core)                       │ IPokemonApi (Refit)   │
+│          │                                           │                       │
+│          ▼                                           ▼                       │
+│  ┌──────────────────────────┐      ┌─────────────────────────────────────┐   │
+│  │   PokemonDbContext       │      │         IPokemonApi                 │   │
+│  │  (Entity Framework Core) │      │  (Refit HTTP Client Interface)      │   │
+│  │                          │      │                                     │   │
+│  │  DbSet<DbPokemon>        │      │  GET /api/v2/pokemon?limit&offset   │   │
+│  │  DbSet<DbMove>           │      │  GET /api/v2/pokemon/{name}         │   │
+│  └──────────┬───────────────┘      └──────────────┬──────────────────────┘   │
+│             │                                     │                          │
+└─────────────┼─────────────────────────────────────┼──────────────────────────┘
+              │                                     │
+              │                                     │
+              ▼                                     ▼
+    ┌──────────────────┐              ┌──────────────────────────┐
+    │  SQLite Database │              │  Externe PokeAPI         │
+    │   pokemon.db     │              │  https://pokeapi.co      │
+    │                  │              │                          │
+    │  Tabellen:       │              │  REST API Endpoints      │
+    │  • Pokemons      │              │  • Pokemon Liste         │
+    │  • Moves         │              │  • Pokemon Details       │
+    └──────────────────┘              └──────────────────────────┘
+
+
+The goal is to sync the pokemon data set initially on application startup.
+
+- Create a class that uses the `[ÌHostedService](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-10.0&tabs=visual-studio#ihostedservice-interface)``interface to execute startup code
+- The new class needs the pokemon api and a database context as dependencies. The database context can´t be refrenced because it does have a different scope lifetime. use the ``IServiceProvider`` instead and create a new instance like that:
+```c#
+using var scope = _serviceProvider.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<PokemonDbContext>();
+```
+- Make sure the database is fresh and empty:
+```c#
+await context.Database.EnsureDeletedAsync(cancellationToken);
+await context.Database.EnsureCreatedAsync(cancellationToken);
+```
+- query a list of pokemons with the ``GetPokemonListAsync`` service method
+- for each pokemon query the details and write it to the database (don´t forget to call ``SaveChanges`` on the context)
+
+Our application now should siync the data initially and the rest of the code still works like before.
+
+### Level 14 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
+We learned how to use hosted service classess to initially sync data into our database.
+---
