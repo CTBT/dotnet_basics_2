@@ -18,6 +18,7 @@ Coding:
 - Make your app configurable for different environments
 - Testing your code
 - Creating a simple UI that requests data from the backend
+- Use a database to persist your data
 
 ---
 ## Basic Knowledge
@@ -301,12 +302,14 @@ We learned how write and run tests for our code
 
 ---
 
-### Level 10 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+### Level 10 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 We learned to leverage mocking to effectively write tests for a single layer of our application
 
 ---
 
 ## Level 11 - Build your own UI with Blazor
+Add a simple ui based on the Blazor Framework to display pokemon data.
+
 - Add a Blazor Web App "PokemonPage" to your solution (RenderMode: Server, Interactivity Location: Global)
 - Create a razor page that calls the IPokemonService.GetPokemonListAsync() method to display a list of pokemons and provide a search functionality
 - Create a razor page that calls the IPokemonService.GetDetails() method to display pokemon detail information
@@ -319,12 +322,99 @@ Hints:
 
 ---
 
-### Level 11 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ 
+### Level 11 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 We learned how to create a web UI with Blazor
 
 ---
 
-# Further things to know (to be continued)
-- How to use different testing strategies
-- How to observe our app with metrics and structured logs
-- How to persist external data in your system
+## Level 13 - Persist your data
+Now we will use the Entity Framework (see [Docs](https://learn.microsoft.com/de-de/ef/core/get-started/overview/first-app?tabs=netcore-cli)) as a technology to persist data in a light-weight database
+
+### Setup the database context for sqlite
+
+- Add the ``Microsoft.EntityFrameworkCore`` and ``Microsoft.EntityFrameworkCore.Sqlite`` nuget packages to the PokemonLib
+- Create a new class derived from the base class ``DbContext``:
+```c#
+public class PokemonDbContext: DbContext
+{
+    public PokemonDbContext(DbContextOptions<PokemonDbContext> options) : base(options){}
+    public DbSet<DbPokemon> Pokemons { get; set; }
+    public DbSet<DbMove> Moves { get; set; }
+}
+```
+- create classes for your database tables DbPokemon and DbMove and define primary keys ([Key] annotation)
+- register the context to your application:
+```c#
+builder.Services.AddDbContext<PokemonDbContext>(options =>
+{
+    options.UseSqlite("Data Source=pokemon.db");
+});
+```
+
+### Use the context to cache pokemon data
+
+- copy the ``PokemonService``class to make a ``PokemonDbCacheService`` that injects the ``PokemonDbContext``
+- make sure the database schema is created by calling ``.Database.EnsureCreated()`` on the context before using it
+- the data request logic can now be improved by checking the database for data:
+```c#
+if (dbItem is not null)
+{
+
+    return new Pokemon()
+    {
+        Id =  dbItem.Id,
+        Name = dbItem.Name,
+        Height = dbItem.Height,
+        Weight = dbItem.Weight,
+        Moves = dbItem.Moves
+            .Select(i => new MoveListItem() { Move = new Move(i.Name) })
+            .ToList()
+    };
+}
+  ```
+
+  - saving a pokemon after requesting the external service works like that:
+  ```c#
+var dbPokemon = new DbPokemon()
+{
+    Id = result.Content.Id,
+    Name = result.Content.Name,
+    Height = result.Content.Height,
+    Weight = result.Content.Weight,
+    Moves = result.Content.Moves.Select(m => new DbMove() { Name = m.Move.Name }).ToList()
+};
+_pokemonDbContext.Pokemons.Add(dbPokemon);
+await _pokemonDbContext.SaveChangesAsync();
+  ```
+
+- now we are  ready to replace the existing ``PokemonService`` in our ``PokemonPage`` application:
+```c#
+builder.Services.AddScoped<IPokemonService, PokemonDbCacheService>();
+```
+
+### Level 13 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
+We learned how to use ef core to cache data in a database
+---
+
+## Level 14: Initial data sync
+The goal is to sync the pokemon data set initially on application startup.
+
+- Create a class that uses the `[ÌHostedService](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-10.0&tabs=visual-studio#ihostedservice-interface)``interface to execute startup code
+- The new class needs the pokemon api and a database context as dependencies. The database context can´t be refrenced because it does have a different scope lifetime. use the ``IServiceProvider`` instead and create a new instance like that:
+```c#
+using var scope = _serviceProvider.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<PokemonDbContext>();
+```
+- Make sure the database is fresh and empty:
+```c#
+await context.Database.EnsureDeletedAsync(cancellationToken);
+await context.Database.EnsureCreatedAsync(cancellationToken);
+```
+- query a list of pokemons with the ``GetPokemonListAsync`` service method
+- for each pokemon query the details and write it to the database (don´t forget to call ``SaveChanges`` on the context)
+
+Our application now should siync the data initially and the rest of the code still works like before.
+
+### Level 14 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
+We learned how to use hosted service classess to initially sync data into our database.
+---
