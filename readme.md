@@ -400,7 +400,7 @@ We learned how to use ef core to cache data in a database
 ## Level 14: Initial data sync
 The goal is to sync the pokemon data set initially on application startup.
 
-- Create a class that uses the [ÌHostedService](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-10.0&tabs=visual-studio#ihostedservice-interface)interface to execute startup code
+- Create a class ``PokemonSyncJob``that uses the [ÌHostedService](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-10.0&tabs=visual-studio#ihostedservice-interface) interface to execute startup code
 - The new class needs the pokemon api and a database context as dependencies. The database context can´t be refrenced because it does have a different scope lifetime. use the ``IServiceProvider`` instead and create a new instance like that:
 ```c#
 using var scope = _serviceProvider.CreateScope();
@@ -413,9 +413,14 @@ await context.Database.EnsureCreatedAsync(cancellationToken);
 ```
 - query a list of pokemons with the ``GetPokemonListAsync`` service method
 - for each pokemon query the details and write it to the database (don´t forget to call ``SaveChanges`` on the context)
+- add the ``PokemonSyncJob`` as a hosted service:
+```c#
+builder.Services.AddHostedService<PokemonSyncJob>();
+```
 
-Our application now should siync the data initially and the rest of the code still works like before.
+Our application now should sync the data initially and the rest of the code still works like before.
 
 ### Level 14 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 We learned how to use hosted service classess to initially sync data into our database.
+
 ---
