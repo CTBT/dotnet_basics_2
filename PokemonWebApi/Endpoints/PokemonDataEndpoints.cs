@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using PokemonLib.Models;
+using PokemonLib.PokeApi.Models;
 using PokemonLib.PokeApi.Services;
 
 namespace PokemonWebApi.Endpoints;

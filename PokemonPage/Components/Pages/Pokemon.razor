@@ -1,4 +1,5 @@
 @page "/pokemon/{name}"
+@using PokemonLib.PokeApi.Models
 @using PokemonLib.PokeApi.Services
 @attribute [StreamRendering]
 @inject IPokemonService PokemonService
@@ -46,7 +47,7 @@ else
     public required string Name { get; set; }
 
     private string Url => $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/{_pokemon.Id}.png";
-    private PokemonLib.Models.Pokemon? _pokemon;
+    private PokemonLib.PokeApi.Models.Pokemon? _pokemon;
     private List<PokemonListItem>? _pokemons;
 
     protected override async Task OnInitializedAsync()

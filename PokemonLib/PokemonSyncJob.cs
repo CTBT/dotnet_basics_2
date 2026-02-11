@@ -20,9 +20,8 @@ public class PokemonSyncJob: IHostedService
     {
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<PokemonDbContext>();
-        await context.Database.EnsureDeletedAsync(cancellationToken);
         await context.Database.EnsureCreatedAsync(cancellationToken);
-        var pokemonList = await _pokemonApi.GetPokemonListAsync(100, 0);
+        var pokemonList = await _pokemonApi.GetPokemonListAsync(1000, 0);
 
         var pokemonNames = pokemonList.Results.Select(i => i.Name).ToList();
         var pokemons = new Dictionary<string, DbPokemon>();

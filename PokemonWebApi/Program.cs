@@ -1,4 +1,3 @@
-using System.Runtime.Intrinsics;
 using PokemonLib.PokeApi.Services;
 using PokemonWebApi.Endpoints;
 using Scalar.AspNetCore;
@@ -15,7 +14,7 @@ if (useTestData)
 }
 else
 {
-    builder.Services.AddScoped<IPokemonService, PokemonService>();
+    builder.Services.AddScoped<IPokemonService, PokemonApiService>();
     builder.Services.AddRefitClient<IPokemonApi>().ConfigureHttpClient(c =>
     {
         c.BaseAddress = new Uri("https://pokeapi.co");

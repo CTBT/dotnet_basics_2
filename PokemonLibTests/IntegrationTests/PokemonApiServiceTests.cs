@@ -1,13 +1,13 @@
 ﻿using System.Net;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using PokemonLib.Models;
+using PokemonLib.PokeApi.Models;
 using PokemonLib.PokeApi.Services;
 using Refit;
 
 namespace PokemonLibTests;
 
-public class PokemonServiceTests
+public class PokemonApiServiceTests
 {
     private readonly Mock<IPokemonApi> _pokemonApi = new();
 
@@ -25,14 +25,14 @@ public class PokemonServiceTests
                     Weight = 69,
                     Moves = new List<MoveListItem>
                     {
-                        new() { Move = new Move(name: "tackle") },
-                        new() { Move = new Move(name: "vine whip") }
+                        new() { Move = new Move{Name = "tackle"} },
+                        new() { Move = new Move{Name = "vine whip"} }
                     }
                 },
                 null
             ));
         
-        var pokemonService = new PokemonService(_pokemonApi.Object, NullLogger<PokemonService>.Instance);
+        var pokemonService = new PokemonApiService(_pokemonApi.Object, NullLogger<PokemonApiService>.Instance);
         
         // act
         var result = await pokemonService.GetPokemonDetailsAsync("bulbasaur");
@@ -48,7 +48,7 @@ public class PokemonServiceTests
         _pokemonApi.Setup(api => api.GetPokemonDetailsAsync("notfounditem"))
             .ReturnsAsync(() => new ApiResponse<Pokemon>(new HttpResponseMessage(HttpStatusCode.NotFound), null, null));
         
-        var pokemonService = new PokemonService(_pokemonApi.Object, NullLogger<PokemonService>.Instance);
+        var pokemonService = new PokemonApiService(_pokemonApi.Object, NullLogger<PokemonApiService>.Instance);
         
         // act
         var result = await pokemonService.GetPokemonDetailsAsync("notfounditem");

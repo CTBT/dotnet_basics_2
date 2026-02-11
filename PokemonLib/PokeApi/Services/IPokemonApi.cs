@@ -1,4 +1,4 @@
-using PokemonLib.Models;
+using PokemonLib.PokeApi.Models;
 using Refit;
 
 namespace PokemonLib.PokeApi.Services;

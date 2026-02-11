@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using PokemonLib.Models;
+using PokemonLib.PokeApi.Models;
 
 namespace PokemonLib.PokeApi.Services;
 
@@ -34,7 +34,7 @@ public class PokemonTestService : IPokemonService
             Weight = 100,
             Moves = new List<MoveListItem>
             {
-                new() { Move = new Move(name: "Move1") }, new() {Move = new Move(name: "Move2") }
+                new() { Move = new Move { Name= "Move1" }}, new() {Move = new Move{Name = "Move2"} }
             }
         });
     }

@@ -1,14 +1,14 @@
 using System.Net;
 using Microsoft.Extensions.Logging;
-using PokemonLib.Models;
+using PokemonLib.PokeApi.Models;
 
 namespace PokemonLib.PokeApi.Services;
 
-public class PokemonService : IPokemonService
+public class PokemonApiService : IPokemonService
 {
-    private readonly ILogger<PokemonService> _logger;
+    private readonly ILogger<PokemonApiService> _logger;
     private readonly IPokemonApi _pokemonApi;
-    public PokemonService(IPokemonApi pokemonApi, ILogger<PokemonService> logger)
+    public PokemonApiService(IPokemonApi pokemonApi, ILogger<PokemonApiService> logger)
     {
         _logger = logger;
         _pokemonApi = pokemonApi;

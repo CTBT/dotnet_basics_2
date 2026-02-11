@@ -1,4 +1,4 @@
-using PokemonLib.Models;
+using PokemonLib.PokeApi.Models;
 
 namespace PokemonLib.PokeApi.Services;
 

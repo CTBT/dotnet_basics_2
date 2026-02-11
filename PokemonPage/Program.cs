@@ -18,7 +18,7 @@ builder.Services.AddRefitClient<IPokemonApi>()
 builder.Services.AddFluentUIComponents();
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<IPokemonService, PokemonDbCacheService>();
+builder.Services.AddScoped<IPokemonService, PokemonDbService>();
 
 builder.Services.AddHostedService<PokemonSyncJob>();
 
