@@ -417,9 +417,41 @@ await context.Database.EnsureCreatedAsync(cancellationToken);
 builder.Services.AddHostedService<PokemonSyncJob>();
 ```
 
-Our application now should sync the data initially and the rest of the code still works like before.
+When started, our application now will sync the data before listening for requests.
 
 ### Level 14 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
-We learned how to use hosted service classess to initially sync data into our database.
+Know we know how to use hosted services to initially sync data into our database.
 
 ---
+
+## Level 15: Database schema migrations
+We will learn how to create database schema migrations and update a database
+
+- First we need the entity framework cli tool:
+``dotnet tool install --global dotnet-ef``
+
+- Also we need the ``Microsoft.EntityFramework.Design package`` from nuget
+
+- to see if everything is ready we print a list of available database context:
+``dotnet ef dbcontext list``
+
+- we can always create an sql script for our whole database schema:
+``dotnet ef dbcontext script --startup-project ../PokemonPage````
+
+- now we can create a first migration that includes the current schema:
+``dotnet ef migrations add Initial --startup-project ../PokemonPage``
+
+- to make migrations work we need to change one line of our code. Replace the ``EnsureCreated`` call on the context:
+``await context.Database.MigrateAsync(cancellationToken)``
+
+- To create a change let´s create indices for the name attributes of our tables to make queries faster:
+``[Index(nameof(Name))]``
+
+- Again we create a migration:
+``dotnet ef migrations add Indices --startup-project ../PokemonPage``
+
+- at the end we update our local sqlite database to have the newest migration applied
+``dotnet ef database update --startup-project ../PokemonPage``
+
+### Level 15 completed - ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
+Now we know how to deal with database changes.
