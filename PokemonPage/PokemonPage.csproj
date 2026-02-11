@@ -12,13 +12,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.App.Internal.Assets" Version="10.0.2" />
+      <PackageReference Include="Microsoft.AspNetCore.App.Internal.Assets" Version="10.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.3" />
-      <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" Version="4.11.3" />
-      <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.3" />
+      <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.13.2" />
+      <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" Version="4.13.2" />
+      <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.13.2" />
     </ItemGroup>
 
 </Project>
