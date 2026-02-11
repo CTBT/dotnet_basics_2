@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PokemonLib.Database;
 using PokemonLib.PokeApi.Services;
@@ -20,7 +21,7 @@ public class PokemonSyncJob: IHostedService
     {
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<PokemonDbContext>();
-        await context.Database.EnsureCreatedAsync(cancellationToken);
+        await context.Database.MigrateAsync(cancellationToken);
         var pokemonList = await _pokemonApi.GetPokemonListAsync(1000, 0);
 
         var pokemonNames = pokemonList.Results.Select(i => i.Name).ToList();

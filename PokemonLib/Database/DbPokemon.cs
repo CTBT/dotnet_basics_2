@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PokemonLib.Database;
 
+[Index(nameof(Name), IsUnique = true)]
 public class DbPokemon
 {
     [Key]
